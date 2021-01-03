@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
 import getImagePalette from 'image-palette-core';
-import './App.css';
 import data from './animals.json';
 import importerAnimals from './helpers/importerAnimals';
-import importerStats from './helpers/importerStats';
 import shuffle from './helpers/shuffle';
 import Navigation from './navigation';
 import Controls from './controls';
@@ -14,7 +12,6 @@ import Dialog from './dialog';
 import Facts from './facts';
 import aboutContent from './aboutContent';
 import tingle from 'tingle.js';
-import './css/tingle.css';
 import DecisionAnimation from './decisionAnimation';
 import Calc from './calc';
 
@@ -40,18 +37,17 @@ else {
 }
 
 
-class App extends Component {
+export default class App extends Component {
 
   constructor(props) {
     super();
 
-    this.checkIDeviceIsAppropriate();
+    // this.checkIDeviceIsAppropriate();
 
     let animals = importerAnimals(data);
     this.animals = shuffle(animals);
 
-    let categoryStats = importerStats();
-    this.categoryStats = categoryStats;
+    // TODO: Get stats from ExpressJS
 
     this.state = {
       animation: "flip-in-hor-bottom",
@@ -83,7 +79,7 @@ class App extends Component {
   }
 
   buildImageURL = (slug) => {
-      return `/images/${slug}.jpg?${Date.now()}`; 
+    return `/images/${slug}.jpg`; 
   }
 
   incrementCountForDecision = (isBastard) => {
@@ -462,6 +458,3 @@ class App extends Component {
     );
   }
 }
-
-
-export default App;

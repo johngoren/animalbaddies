@@ -3,10 +3,13 @@ const app = express()
 const path = require('path')
 const port = 3000
 
-app.use(express.static('public'));
-	
+app.set('view engine', 'pug')
+app.use(express.static(__dirname + '/public'));
+app.use("/dist", express.static(__dirname + '/dist'));
+app.use("/styles", express.static(__dirname + '/styles'));
+
 app.get('/', (req, res) => {
-    res.send("test");
+    res.render('index');
 })
 
 app.listen(port, () => {
