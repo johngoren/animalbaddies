@@ -1,0 +1,6 @@
+html
+	head
+		title Animal Bastards
+	body
+		script.
+			ReactDOM.render(<App />, document.getElementById('root'));
