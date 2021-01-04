@@ -22,8 +22,9 @@ var pool = mysql.createPool({
 })
 
 app.get('/', (req, res) => {
-    var stats = getStats();
-    res.render('index', {stats: stats});
+    getStatsFromDB(function(result) {
+        res.render('index', {stats: result});
+    });
 })
 
 app.listen(port, () => {
@@ -32,7 +33,7 @@ app.listen(port, () => {
 
 // Begin: DB
 
-function getStats() {
+function getStatsFromDB(callback) {
 
     pool.getConnection(function(err, con) {
 
@@ -42,7 +43,7 @@ function getStats() {
         else {
             con.query("SELECT * FROM stats", function(error, results, fields) {
                 if (error) {
-                    return error;
+                    callback(error);
                 }
                 else {
                     var tallies = [0, 0, 0, 0, 0];
@@ -56,7 +57,7 @@ function getStats() {
                     for (i=0; i < percentages.length; i++) {
                         percentages[i] = tallies[i] / total * 100;
                     }
-                    return percentages;
+                    callback(percentages);
                 }
             });
         }

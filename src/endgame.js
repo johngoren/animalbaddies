@@ -10,8 +10,7 @@ export default class Endgame extends Component {
         this.state = {
             clickedContinue: false
         };
-      }
-
+    }
       
     calculateDisliked(disliked) {
         return Math.floor(disliked / 15 * 100);
@@ -88,14 +87,12 @@ export default class Endgame extends Component {
     }
 
     render() {
-        let {countBastard, stats} = this.props; // TODO: Should be array of percentages
+        let {countBastard, stats} = this.props;
         let percentageDisliked = this.calculateDisliked(countBastard);
         let categoryNum = this.getCategoryNumFromPercentage(percentageDisliked);
         let categoryTitle = this.getCategoryTitle(categoryNum);
         let categoryBlurb = this.getCategoryBlurb(categoryNum);        
-        console.log(percentageDisliked);
-        console.log(categoryNum);
-    
+
         let Content;
         if (!this.state.clickedContinue) {
             Content = (
@@ -125,9 +122,7 @@ export default class Endgame extends Component {
 
         return (
             <Fragment>
-            <div className="App-card stats-card">
                 {Content}
-            </div>
             </Fragment>
         )
     }
@@ -135,12 +130,12 @@ export default class Endgame extends Component {
 
 class CategoryChart extends Component {
     componentDidMount() {
-	var ctx = document.getElementById("myChart");
-	drawChart(this.props.categoryNum, this.props.stats, ctx, Chart);
+        var ctx = document.getElementById("myChart");
+        ctx.getContext("2d").height = 300;
+	    drawChart(this.props.categoryNum, ctx, Chart);
     }
     
     render() {
-	
         return (
 
 	    <Fragment>

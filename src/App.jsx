@@ -47,8 +47,6 @@ export default class App extends Component {
     let animals = importerAnimals(data);
     this.animals = shuffle(animals);
 
-    // TODO: Get stats from ExpressJS
-
     this.state = {
       animation: "flip-in-hor-bottom",
       backgroundColor: '#000',
@@ -335,16 +333,10 @@ export default class App extends Component {
 
     if (endgameMode === true) {
       return (
-        <div className="App">
-          <div className="cards">
-            <div className="flex">
             <Endgame
               animals={animals}
               countBastard={countBastard}
             />
-          </div>
-            </div>
-      </div>
       )
     }
 
