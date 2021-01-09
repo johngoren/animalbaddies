@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import axios from 'axios';
 import getImagePalette from 'image-palette-core';
 import data from './animals.json';
 import importerAnimals from './helpers/importerAnimals';
@@ -42,7 +43,7 @@ export default class App extends Component {
   constructor(props) {
     super();
 
-    // this.checkIDeviceIsAppropriate();
+    this.isDeviceAppropriate();
 
     let animals = importerAnimals(data);
     this.animals = shuffle(animals);
@@ -70,16 +71,7 @@ export default class App extends Component {
     this.setupModal();
   }
 
-  checkIfDeviceIsAppropriate = () => {
-      if (/Mobi|Android/i.test(navigator.userAgent)) {
-	  alert("Thanks for visiting. Animal Bastards is best experienced on desktops and on tablets in landscape mode.");
-      }
-  }
-
-  buildImageURL = (slug) => {
-    return `/images/${slug}.jpg`; 
-  }
-
+  
   incrementCountForDecision = (isBastard) => {
     let { countNotBastard, countBastard } = this.state;
     isBastard === BASTARD ? countBastard++ : countNotBastard++;
@@ -119,38 +111,6 @@ export default class App extends Component {
     }
   }
 
-  modalClose = ()=> {
-    this.modal.close();
-  }
-
-  modalOpen = ()=> {
-    this.modal.open();
-  }
-
-  onClickStart = () => {
-    this.setState({
-      welcomeMode: false
-    })
-  }
-
-  playMusicIfNeeded = () => {
-    if (!this.state.musicIsPlaying) {
-      document.getElementById("bossanova").play();
-      this.setState({
-        musicIsPlaying: true
-      })
-    }
-  }
-
-  playSoundForDecision = (isBastard)=> {
-    if (this.state.muted) {
-      return;
-    }
-    if (isBastard === BASTARD) {
-      document.getElementById("audioBastard").play();
-    }
-  }
-
   segueToNextScreenWithDecision = (isBastard)=> {
     let {currentIndex} = this.state;
     let {id} = this.animals[currentIndex];
@@ -159,11 +119,12 @@ export default class App extends Component {
       id: id,
       isBastard: isBastard
     };
+    
     let oldVotes = this.state.votes;
     var newVotes = oldVotes;
     newVotes.push(newVote);
+    this.postVoteToServer(newVote);
     this.incrementCountForDecision(isBastard);
-
 
     let normalCompletion = () => {
       this.setBackgroundColorForAnimal(currentIndex + 1);
@@ -253,23 +214,60 @@ export default class App extends Component {
     })
   }
 
-  setupModal = () => {
-    this.modal = new tingle.modal({
-      footer: true,
-      stickyFooter: false,
-      closeMethods: ['overlay', 'button', 'escape'],
-      closeLabel: "Close",
-      cssClass: ['custom-class-1', 'custom-class-2'],
-    });
+ 
+  
+  // MARK: Helpers
 
-    // set content
-    this.modal.setContent(aboutContent);
+  isDeviceAppropriate = () => {
+    if (/Mobi|Android/i.test(navigator.userAgent)) {
+    alert("Thanks for visiting. Animal Bastards is best experienced on desktops and on tablets in landscape mode.");
+    }
   }
 
+  buildImageURL = (slug) => {
+    return `/images/${slug}.jpg`; 
+  }
 
   shouldGoToStatsInterlude = ()=> {
     const remainder = (this.state.currentIndex + 1) % CARDS_BETWEEN_STATS;
     return ((remainder === 0) ? true : false);
+  }
+
+  // MARK: Network
+
+  postCategoryToServer = (category) => {
+    axios.post('/category'/ + category);
+  }
+
+  postVoteToServer = (vote) => {
+    let animalId = vote.id;
+    let liked;
+    if (vote.isBastard === "BASTARD") { liked = 0 } else { liked = 1 }
+    alert("Posting " + liked + " from " + vote.isBastard);
+    axios.post('/vote/' + animalId + '/' + liked);
+  }
+
+
+ 
+
+  // MARK: Sounds
+
+  playMusicIfNeeded = () => {
+    if (!this.state.musicIsPlaying) {
+      document.getElementById("bossanova").play();
+      this.setState({
+        musicIsPlaying: true
+      })
+    }
+  }
+
+  playSoundForDecision = (isBastard)=> {
+    if (this.state.muted) {
+      return;
+    }
+    if (isBastard === BASTARD) {
+      document.getElementById("audioBastard").play();
+    }
   }
 
   stopMusic = () => {
@@ -284,6 +282,42 @@ export default class App extends Component {
       muted: !this.state.muted
     })
   }
+
+
+  // MARK: Welcome screen
+
+  onClickStart = () => {
+    this.setState({
+      welcomeMode: false
+    })
+  }
+
+  
+
+
+  // MARK: Modal 
+
+  setupModal = () => {
+    this.modal = new tingle.modal({
+      footer: true,
+      stickyFooter: false,
+      closeMethods: ['overlay', 'button', 'escape'],
+      closeLabel: "Close",
+      cssClass: ['custom-class-1', 'custom-class-2'],
+    });
+
+    // set content
+    this.modal.setContent(aboutContent);
+  }
+
+  modalClose = ()=> {
+    this.modal.close();
+  }
+
+  modalOpen = ()=> {
+    this.modal.open();
+  }
+
 
   // MARK: Stats
 
@@ -449,4 +483,9 @@ export default class App extends Component {
       
     );
   }
+
+  
+
+
+
 }

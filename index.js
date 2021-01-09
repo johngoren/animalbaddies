@@ -4,6 +4,7 @@ const path = require('path')
 const port = 3000
 const mysql = require('mysql')
 
+
 app.set('view engine', 'pug')
 app.use(express.static(__dirname + '/public'));
 app.use("/dist", express.static(__dirname + '/dist'));
@@ -30,6 +31,64 @@ app.get('/', (req, res) => {
 app.listen(port, () => {
     console.log(`Example app listening at http://localhost:${port}`)
 })
+
+
+// Records that the user ended up in category :category
+
+app.post('/category/:category', (req, res) => {
+    var category = req.params.category;
+    var unixDate = Math.floor(Date.now() / 1000);
+
+    var intCategory = parseInt(category);
+    if (intCategory == null) {
+        throw new Error("Invalid category.");
+    }
+
+    if (intCategory < 0 || intCategory > 5) {
+        throw new Error("Invalid category.");
+    }
+
+    pool.getConnection(function(err, con) {
+
+        con.query("INSERT INTO stats VALUES(" + unixDate + ", " + category + ")", function(error, results, fields) {
+            if (error) {
+                res.send(error);
+            }
+            else {
+                res.send(results);
+            }
+        });
+
+    });
+})
+
+// Records the user's vote for a particular animal
+
+app.post('/vote/:id/:liked', (req, res) => {
+    var unixDate = Math.floor(Date.now() / 1000);
+    var id = req.params.id;
+    var liked = req.params.liked;
+
+    if (liked < 0 || liked > 1) {
+        throw new Error("Invalid vote.");
+    }
+
+    pool.getConnection(function(err, con) {
+
+        con.query("INSERT INTO votes VALUES(" + unixDate + ", " + id + "," + liked + ")", function(error, results, fields) {
+            if (error) {
+                res.send(error);
+            }
+            else {
+                res.send(results);
+            }
+        });
+
+    });
+})
+
+
+
 
 // Begin: DB
 
@@ -65,31 +124,22 @@ function getStatsFromDB(callback) {
 
 }
 
-app.post('/votes/:category', (req, res) => {
-    var category = req.params.category;
-    var unixDate = Math.floor(Date.now() / 1000);
+// TODO: Should return a map
 
-    var intCategory = parseInt(category);
-    if (intCategory == null) {
-        throw new Error("Invalid category.");
-    }
-
-    if (intCategory < 0 || intCategory > 5) {
-        throw new Error("Invalid category.");
-    }
+function getVotesFromDB(callback) {
 
     pool.getConnection(function(err, con) {
 
-        con.query("INSERT INTO stats VALUES(" + unixDate + ", " + category + ")", function(error, results, fields) {
-            if (error) {
-                res.send(error);
-            }
-            else {
-                res.send(results);
-            }
-        });
+        if (err) {
+            throw err;
+        }
+        else {
+            con.query("SELECT * FROM votes", function(error, results, fields) {
+
+                callback(results);
+
+            });
+        }
 
     });
-})
-
-
+}
