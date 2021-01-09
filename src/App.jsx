@@ -21,7 +21,7 @@ import {
     NOT_BASTARD
 } from './constants';
 
-var TEST_MODE = true;
+var TEST_MODE = false;
 
 let CARD_ARRIVAL = "flip-in-hor-bottom"
 let CARD_DEPARTURE_RIGHT = "roll-out-right";
@@ -235,21 +235,7 @@ export default class App extends Component {
 
   // MARK: Network
 
-  postCategoryToServer = (category) => {
-    axios.post('/category'/ + category);
-  }
-
-  postVoteToServer = (vote) => {
-    let animalId = vote.id;
-    let liked;
-    if (vote.isBastard === "BASTARD") { liked = 0 } else { liked = 1 }
-    alert("Posting " + liked + " from " + vote.isBastard);
-    axios.post('/vote/' + animalId + '/' + liked);
-  }
-
-
- 
-
+  
   // MARK: Sounds
 
   playMusicIfNeeded = () => {
@@ -318,6 +304,14 @@ export default class App extends Component {
     this.modal.open();
   }
 
+  // MARK: Network
+
+  postVoteToServer = (vote) => {
+    let animalId = vote.id;
+    let liked;
+    if (vote.isBastard === "BASTARD") { liked = 0 } else { liked = 1 }
+    axios.post('/vote/' + animalId + '/' + liked);
+  }
 
   // MARK: Stats
 
@@ -377,8 +371,8 @@ export default class App extends Component {
     if (welcomeMode === true) {
       return (
         <div className="App">
-          <div class="cards">
-            <div class="flex">
+          <div className="cards">
+            <div className="flex">
               <Welcome
                 onClick={this.onClickStart}
               />
@@ -392,7 +386,7 @@ export default class App extends Component {
     if (statsInterludeIsOn === true) {
 
       Content = (
-        <div class="flex">
+        <div className="flex">
         <StatsInterlude
         animals = {animals}
         animation={animation}

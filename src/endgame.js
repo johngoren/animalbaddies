@@ -1,6 +1,6 @@
 import React, { Component, Fragment, useEffect } from 'react';
 import ScriptTag from 'react-script-tag';
-import publisher from './helpers/publisher';
+import axios from 'axios';
 import Chart from 'chart.js';
 import drawChart from './drawChart.js';
 
@@ -75,6 +75,7 @@ export default class Endgame extends Component {
                 break;
         }
     }
+      
 
     proceed = ()=> {
         this.setState({
@@ -90,10 +91,13 @@ export default class Endgame extends Component {
         let {countBastard, stats} = this.props;
         let percentageDisliked = this.calculateDisliked(countBastard);
         let categoryNum = this.getCategoryNumFromPercentage(percentageDisliked);
+        this.postCategoryToServer(categoryNum);
+        
         let categoryTitle = this.getCategoryTitle(categoryNum);
         let categoryBlurb = this.getCategoryBlurb(categoryNum);        
-
         let Content;
+
+
         if (!this.state.clickedContinue) {
             Content = (
             <Fragment>
@@ -125,6 +129,57 @@ export default class Endgame extends Component {
                 {Content}
             </Fragment>
         )
+    }
+
+    // MARK: Network and calc
+
+    getMostAndLeastLikedAnimal = () => {
+        // TODO: Extract from HTML
+    }
+
+    getVotesFromServer = () => {
+        // TODO: Extract from HTML
+    }
+
+    postCategoryToServer = (category) => {
+        axios.post('/category/' + category);
+    }
+
+    getPopularity = (votes) => {
+        var mapDisliked = {};
+        var mapLiked = {};
+    
+        for (vote of votes) {
+            console.log(vote);
+            var id = vote.id;
+            var liked = vote.liked;
+            if (liked) {
+                if (mapLiked.hasOwnProperty(id)) {
+                    var oldValue = mapLiked[id];
+                    var newValue = oldValue++;
+                    mapLiked[id] = newValue;
+                }
+                else {
+                    mapLiked[id] = 1;
+                }
+            }
+            else {
+                if (mapDisliked.hasOwnProperty(id)) {
+                    var oldValue = mapDisliked[id];
+                    var newValue = oldValue++;
+                    mapDisliked[id] = newValue;
+                }
+                else {
+                    mapDisliked[id] = 1;
+                }
+            }
+        }
+    
+        return {
+            liked: mapLiked,
+            disliked: mapDisliked
+        }
+    
     }
 }
 

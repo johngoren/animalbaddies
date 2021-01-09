@@ -3,7 +3,6 @@ import React, { Component } from 'react';
 /**
  * Dialog
  * 
- * TODO: Find out if used
  */
 
 export default class Dialog extends Component {

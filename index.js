@@ -23,14 +23,26 @@ var pool = mysql.createPool({
 })
 
 app.get('/', (req, res) => {
-    getStatsFromDB(function(result) {
-        res.render('index', {stats: result});
+    let requestStats = getStatsFromDB(function(stats) {
+        res.render('index', { stats: stats });
     });
 })
 
+app.get('/votes', (req, res) => {
+    getVotesFromDB(function(result) {
+        res.send(result);
+    })
+})
+
+app.get('/popularity', (req, res) => {
+    getVotesFromDB(function(result) {
+        res.send(getPopularityFromVotes(result));        
+    })
+});
+
 app.listen(port, () => {
     console.log(`Example app listening at http://localhost:${port}`)
-})
+});
 
 
 // Records that the user ended up in category :category
@@ -124,7 +136,6 @@ function getStatsFromDB(callback) {
 
 }
 
-// TODO: Should return a map
 
 function getVotesFromDB(callback) {
 
@@ -135,11 +146,44 @@ function getVotesFromDB(callback) {
         }
         else {
             con.query("SELECT * FROM votes", function(error, results, fields) {
-
-                callback(results);
-
+                if (error) {
+                    throw error;
+                }
+                else {
+                    callback(results);    
+                }
             });
         }
 
     });
 }
+
+function getPopularityFromVotes(votes) {
+    console.log("Number of votes: " + votes.length);
+    var likedMap = {};
+    var dislikedMap = {};
+
+    for (vote of votes) {
+        var id = vote.id;
+        var liked = vote.liked;
+
+        if (liked === 1) {
+            var newValue = likedMap[id] != null ? likedMap[id] + 1 : 1;
+            likedMap[id] = newValue;
+        }
+        else {
+            var newValue = dislikedMap[id] != null ? dislikedMap[id] + 1 : 1;
+            dislikedMap[id] = newValue;
+        }
+    }
+
+    var best = Object.keys(likedMap).reduce(function(a, b) { return likedMap[a] > likedMap[b] ? a : b});
+    var worst = Object.keys(dislikedMap).reduce(function(a, b) { return dislikedMap[a] > dislikedMap[b] ? a : b});
+    
+
+    return {
+        liked: best,
+        disliked: worst
+    }
+}
+
