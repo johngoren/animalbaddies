@@ -23,7 +23,8 @@ var pool = mysql.createPool({
 })
 
 app.get('/', (req, res) => {
-    let requestStats = getStatsFromDB(function(stats) {
+    getAllStats().then(function(stats) {
+        console.log(stats);
         res.render('index', { stats: stats });
     });
 })
@@ -104,62 +105,79 @@ app.post('/vote/:id/:liked', (req, res) => {
 
 // Begin: DB
 
+async function getAllStats() {
+    var votes = await getVotesFromDB();
+    var popularity = getPopularityFromVotes(votes);
+    var stats = await getStatsFromDB();
+
+    return {
+        stats: stats,
+        popularity: popularity
+    } 
+}
+
+
 function getStatsFromDB(callback) {
+    return new Promise(resolve => {
 
-    pool.getConnection(function(err, con) {
 
-        if (err) {
-            throw err;
-        }
-        else {
-            con.query("SELECT * FROM stats", function(error, results, fields) {
-                if (error) {
-                    callback(error);
-                }
-                else {
-                    var tallies = [0, 0, 0, 0, 0];
-                    var percentages = [0, 0, 0, 0, 0];
-                    var total = results.length;
+        pool.getConnection(function(err, con) {
 
-                    for (i=0; i < total; i++) {
-                        tallies[results[i].category - 1]++;
+            if (err) {
+                throw err;
+            }
+            else {
+                con.query("SELECT * FROM stats", function(error, results, fields) {
+                    if (error) {
+                        resolve(error);
                     }
+                    else {
+                        var tallies = [0, 0, 0, 0, 0];
+                        var percentages = [0, 0, 0, 0, 0];
+                        var total = results.length;
 
-                    for (i=0; i < percentages.length; i++) {
-                        percentages[i] = tallies[i] / total * 100;
+                        for (i=0; i < total; i++) {
+                            tallies[results[i].category - 1]++;
+                        }
+
+                        for (i=0; i < percentages.length; i++) {
+                            percentages[i] = tallies[i] / total * 100;
+                        }
+                        resolve(percentages);
                     }
-                    callback(percentages);
-                }
-            });
-        }
+                });
+            }
+        });
+
     });
 
 }
 
 
-function getVotesFromDB(callback) {
+function getVotesFromDB() {
+    return new Promise(resolve => {
+        pool.getConnection(function(err, con) {
 
-    pool.getConnection(function(err, con) {
-
-        if (err) {
-            throw err;
-        }
-        else {
-            con.query("SELECT * FROM votes", function(error, results, fields) {
-                if (error) {
-                    throw error;
-                }
-                else {
-                    callback(results);    
-                }
-            });
-        }
-
+            if (err) {
+                throw err;
+            }
+            else {
+                con.query("SELECT * FROM votes", function(error, results, fields) {
+                    if (error) {
+                        throw error;
+                    }
+                    else {
+                        resolve(results);    
+                    }
+                });
+            }    
+        });
     });
-}
+}   
+
+// TODO: If needed, either let the SQL shoulder this tally or limit number of votes
 
 function getPopularityFromVotes(votes) {
-    console.log("Number of votes: " + votes.length);
     var likedMap = {};
     var dislikedMap = {};
 
@@ -174,16 +192,14 @@ function getPopularityFromVotes(votes) {
         else {
             var newValue = dislikedMap[id] != null ? dislikedMap[id] + 1 : 1;
             dislikedMap[id] = newValue;
-        }
+        }   
     }
 
     var best = Object.keys(likedMap).reduce(function(a, b) { return likedMap[a] > likedMap[b] ? a : b});
     var worst = Object.keys(dislikedMap).reduce(function(a, b) { return dislikedMap[a] > dislikedMap[b] ? a : b});
-    
 
     return {
         liked: best,
         disliked: worst
     }
 }
-
