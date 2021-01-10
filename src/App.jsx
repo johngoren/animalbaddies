@@ -21,7 +21,7 @@ import {
     NOT_BASTARD
 } from './constants';
 
-var TEST_MODE = false;
+var TEST_MODE = true;
 
 let CARD_ARRIVAL = "flip-in-hor-bottom"
 let CARD_DEPARTURE_RIGHT = "roll-out-right";

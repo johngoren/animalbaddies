@@ -8,7 +8,7 @@ export default class Endgame extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            clickedContinue: false
+            page: 0
         };
     }
       
@@ -76,10 +76,9 @@ export default class Endgame extends Component {
         }
     }
       
-
     proceed = ()=> {
         this.setState({
-            clickedContinue: true
+            page: this.state.page + 1
         })
     }
 
@@ -88,7 +87,8 @@ export default class Endgame extends Component {
     }
 
     render() {
-        let {countBastard, stats} = this.props;
+        let {countBastard} = this.props;
+        this.stats = this.getStatsFromPage();
         let percentageDisliked = this.calculateDisliked(countBastard);
         let categoryNum = this.getCategoryNumFromPercentage(percentageDisliked);
         this.postCategoryToServer(categoryNum);
@@ -97,31 +97,38 @@ export default class Endgame extends Component {
         let categoryBlurb = this.getCategoryBlurb(categoryNum);        
         let Content;
 
-
-        if (!this.state.clickedContinue) {
-            Content = (
-            <Fragment>
-                <p>You are {categoryTitle}</p>
-                <CategoryChart
-                    categoryNum={categoryNum}
-                    stats={stats}
-                />
-                <button onClick={this.proceed}>
-                    Next
-                </button>
-            </Fragment>
-            )
-        }
-        else {
-            Content = (
-                <Fragment>
-                    <p>You are {categoryTitle}</p>
-                    <p>{categoryBlurb}</p>
-                    <button onClick={this.reset}
-                        >Play Again?
-                    </button>
-                </Fragment>
-            )
+        switch(this.state.page) {
+            case 0:
+                Content = (
+                    <Fragment>
+                        <p>You are {categoryTitle}</p>
+                        <CategoryChart
+                            categoryNum={categoryNum}
+                            stats={this.stats.stats}
+                        />
+                        <button onClick={this.proceed}>
+                            Next
+                        </button>
+                    </Fragment>
+                )
+                break;
+            case 1:
+                Content = (
+                    <Fragment>
+                        <p>You are {categoryTitle}</p>
+                        <p>{categoryBlurb}</p>
+                        <button onClick={this.proceed}
+                            >Next
+                        </button>
+                    </Fragment>
+                )
+                break;
+            case 2:
+                Content = (
+                    <PopularityReport
+                        data={this.stats.popularity}
+                    />
+                )
         }
 
         return (
@@ -137,6 +144,10 @@ export default class Endgame extends Component {
         // TODO: Extract from HTML
     }
 
+    getStatsFromPage = () => {
+        return JSON.parse(document.getElementById("data").getAttribute("data-stats"));
+    }
+
     getVotesFromServer = () => {
         // TODO: Extract from HTML
     }
@@ -144,60 +155,39 @@ export default class Endgame extends Component {
     postCategoryToServer = (category) => {
         axios.post('/category/' + category);
     }
-
-    getPopularity = (votes) => {
-        var mapDisliked = {};
-        var mapLiked = {};
-    
-        for (vote of votes) {
-            console.log(vote);
-            var id = vote.id;
-            var liked = vote.liked;
-            if (liked) {
-                if (mapLiked.hasOwnProperty(id)) {
-                    var oldValue = mapLiked[id];
-                    var newValue = oldValue++;
-                    mapLiked[id] = newValue;
-                }
-                else {
-                    mapLiked[id] = 1;
-                }
-            }
-            else {
-                if (mapDisliked.hasOwnProperty(id)) {
-                    var oldValue = mapDisliked[id];
-                    var newValue = oldValue++;
-                    mapDisliked[id] = newValue;
-                }
-                else {
-                    mapDisliked[id] = 1;
-                }
-            }
-        }
-    
-        return {
-            liked: mapLiked,
-            disliked: mapDisliked
-        }
-    
-    }
+   
 }
 
 class CategoryChart extends Component {
     componentDidMount() {
         var ctx = document.getElementById("myChart");
-        ctx.getContext("2d").height = 300;
 	    drawChart(this.props.categoryNum, ctx, Chart);
     }
     
     render() {
         return (
-
-	    <Fragment>
-		<ScriptTag isHydrating={true} src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"/>
-		<canvas id="myChart"/>
+            <Fragment>
+                <ScriptTag isHydrating={true} src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"/>
+                <canvas id="myChart"/>
             </Fragment>
         )
     }
+}
+
+class PopularityReport extends Component {
+
+    render() {
+        return (
+            <Fragment>
+                <p>Users have judged...</p>
+                <p>PORTRAIT 1 TODO</p>
+                <p>PORTRAIT 2 TODO</p>
+            <button onClick={this.reset}>
+                Play Again?
+            </button>
+            </Fragment>
+        )
+    }
+
 
 }
