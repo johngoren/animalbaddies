@@ -280,7 +280,6 @@ export default class App extends Component {
 
   
 
-
   // MARK: Modal 
 
   setupModal = () => {
@@ -327,8 +326,9 @@ export default class App extends Component {
         statsModeToggle: !statsModeToggle
       }) 
     }
-
   }
+
+
 
   render() {
     const { 
@@ -364,6 +364,7 @@ export default class App extends Component {
             <Endgame
               animals={animals}
               countBastard={countBastard}
+              data={this.data}
             />
       )
     }

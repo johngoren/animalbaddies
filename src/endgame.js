@@ -10,6 +10,7 @@ export default class Endgame extends Component {
         this.state = {
             page: 0
         };
+        this.data = this.getDataFromPage();
     }
       
     calculateDisliked(disliked) {
@@ -86,16 +87,24 @@ export default class Endgame extends Component {
         window.location.reload();
     }
 
+      // MARK: Statistical data from DB
+
+    getDataFromPage = () => {
+        return JSON.parse(document.getElementById("data").getAttribute("data-stats"));
+    }
+
     render() {
-        let {countBastard} = this.props;
-        this.stats = this.getStatsFromPage();
+        let {animals, countBastard} = this.props;
+        let data = this.data.stats;
         let percentageDisliked = this.calculateDisliked(countBastard);
         let categoryNum = this.getCategoryNumFromPercentage(percentageDisliked);
         this.postCategoryToServer(categoryNum);
         
-        let categoryTitle = this.getCategoryTitle(categoryNum);
-        let categoryBlurb = this.getCategoryBlurb(categoryNum);        
         let Content;
+        let categoryTitle = this.getCategoryTitle(categoryNum);
+        let categoryBlurb = this.getCategoryBlurb(categoryNum);   
+
+        debugger;
 
         switch(this.state.page) {
             case 0:
@@ -104,7 +113,7 @@ export default class Endgame extends Component {
                         <p>You are {categoryTitle}</p>
                         <CategoryChart
                             categoryNum={categoryNum}
-                            stats={this.stats.stats}
+                            stats={data.stats}
                         />
                         <button onClick={this.proceed}>
                             Next
@@ -126,7 +135,8 @@ export default class Endgame extends Component {
             case 2:
                 Content = (
                     <PopularityReport
-                        data={this.stats.popularity}
+                        animals={animals}
+                        data={data.popularity}
                     />
                 )
         }
@@ -138,19 +148,7 @@ export default class Endgame extends Component {
         )
     }
 
-    // MARK: Network and calc
-
-    getMostAndLeastLikedAnimal = () => {
-        // TODO: Extract from HTML
-    }
-
-    getStatsFromPage = () => {
-        return JSON.parse(document.getElementById("data").getAttribute("data-stats"));
-    }
-
-    getVotesFromServer = () => {
-        // TODO: Extract from HTML
-    }
+    // MARK: Network
 
     postCategoryToServer = (category) => {
         axios.post('/category/' + category);
@@ -174,14 +172,43 @@ class CategoryChart extends Component {
     }
 }
 
+// TODO: Send either all animals or have the data ready
+
 class PopularityReport extends Component {
 
     render() {
+        var mostLikedId = this.props.liked;
+        var leastLikedId = this.props.disliked;
+
+        var mostLikedAnimal = this.props.animals.filter(animal => animal.id === mostLikedId)[0];
+        var leastLikedAnimal = this.props.animals.filter(animal => animal.id === leastLikedId)[0];
+
+        var mostLikedName = mostLikedAnimal.name;
+        var leastLikedName = leastLikedAnimal.name;
+
+        var mostLikedSlug = mostLikedAnimal.slug;
+        var leastLikedSlug = leastLikedAnimal.slug;
+
+        var mostLikedImg = `/images/${mostLikedSlug}.jpg`;
+        var leastLikedImg = `/images/${leastLikedSlug}.jpg`;
+          
         return (
             <Fragment>
                 <p>Users have judged...</p>
-                <p>PORTRAIT 1 TODO</p>
-                <p>PORTRAIT 2 TODO</p>
+                <table>
+                    <tr>
+                        <td>
+                            <p>{leastLikedName}</p>
+                            <p><img src={leastLikedImg}/></p>
+                        </td>
+                        <td>
+                            <p>{mostLikedName}</p>
+                            <p><img src={mostLikedImg}/></p>
+                        </td>
+                    </tr>
+                </table>
+
+            
             <button onClick={this.reset}>
                 Play Again?
             </button>
