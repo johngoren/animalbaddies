@@ -2,6 +2,10 @@
   text-align: center;
 }
 
+p {
+  color: black;
+}
+
 .Animal-portrait {
   width: 280px;
   height: 280px;
@@ -42,8 +46,12 @@
 .nav li {
   float: left;
   font-size: 14px;
-  padding-top: 12px;
-  padding-left: 12px;
+  padding-top: 20px;
+  padding-left: 20px;
+}
+
+.nav .last {
+  margin-right: 10px;
 }
 
 .nav .icon {
@@ -70,6 +78,28 @@
   border-radius: 10px;
   border: 1px solid #ddd;
 }
+
+.endgame-card {
+  min-height: 54vh;
+  width: 500px;
+  height: 500px;
+  background-color: #fff;
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+}
+
+.welcome-card {
+  width: 500px;
+  height: 100%;
+  background-color: #fff;
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  color: black;
+  padding: 60px;
+}
+
 
 .stats-card {
   color: #000;
@@ -252,7 +282,7 @@ Buttons
 
 .decision .bastard {
   font-family: 'Shrikhand'
-}
+} 
 
 .decision .not-bastard {
   font-family: 'Montserrat'
@@ -264,7 +294,9 @@ Buttons
   flex-wrap: wrap;
 }
 
-
+.brown {
+  background-color: rgb(117, 117, 116);
+}
 
 /**
 Animation

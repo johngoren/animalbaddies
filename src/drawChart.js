@@ -1,6 +1,4 @@
-export default function drawChart(category, ctx, Chart) {
-	var dataElement = document.querySelector('#data')
-	var stats = JSON.parse(dataElement.dataset.stats)["stats"];
+export default function drawChart(stats, ctx, Chart) {
     var myChart = new Chart(ctx, {
 	type: 'bar',
 	data: {

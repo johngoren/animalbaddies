@@ -220,7 +220,7 @@ export default class App extends Component {
 
   isDeviceAppropriate = () => {
     if (/Mobi|Android/i.test(navigator.userAgent)) {
-    alert("Thanks for visiting. Animal Bastards is best experienced on desktops and on tablets in landscape mode.");
+    alert("Animal Bastards is best experienced on desktops and on tablets in landscape mode.");
     }
   }
 
@@ -232,8 +232,6 @@ export default class App extends Component {
     const remainder = (this.state.currentIndex + 1) % CARDS_BETWEEN_STATS;
     return ((remainder === 0) ? true : false);
   }
-
-  // MARK: Network
 
   
   // MARK: Sounds
@@ -277,7 +275,6 @@ export default class App extends Component {
       welcomeMode: false
     })
   }
-
   
 
   // MARK: Modal 
@@ -361,18 +358,21 @@ export default class App extends Component {
 
     if (endgameMode === true) {
       return (
+          <div className="App flex">
+          <div className="app-div endgame-card">
             <Endgame
               animals={animals}
               countBastard={countBastard}
               data={this.data}
             />
+          </div></div>
       )
     }
 
     if (welcomeMode === true) {
       return (
         <div className="App">
-          <div className="cards">
+          <div className="app-div">
             <div className="flex">
               <Welcome
                 onClick={this.onClickStart}
@@ -454,6 +454,7 @@ export default class App extends Component {
           <audio
             id="audioBastard"
             src="https://www.gorenfeld.net/media/animals/sounds/elephant.wav"
+            volume="0.5"
           />
         <DecisionAnimation
           status={status}

@@ -104,18 +104,16 @@ export default class Endgame extends Component {
         let categoryTitle = this.getCategoryTitle(categoryNum);
         let categoryBlurb = this.getCategoryBlurb(categoryNum);   
 
-        debugger;
-
         switch(this.state.page) {
             case 0:
                 Content = (
                     <Fragment>
-                        <p>You are {categoryTitle}</p>
+                        <p className="youdisliked">You are {categoryTitle}</p>
                         <CategoryChart
                             categoryNum={categoryNum}
                             stats={data.stats}
                         />
-                        <button onClick={this.proceed}>
+                        <button className="choiceButton notBastardButton wriggly brown" onClick={this.proceed}>
                             Next
                         </button>
                     </Fragment>
@@ -124,9 +122,9 @@ export default class Endgame extends Component {
             case 1:
                 Content = (
                     <Fragment>
-                        <p>You are {categoryTitle}</p>
+                        <p className="youdisliked">You are {categoryTitle}</p>
                         <p>{categoryBlurb}</p>
-                        <button onClick={this.proceed}
+                        <button className="choiceButton notBastardButton wriggly brown" onClick={this.proceed}
                             >Next
                         </button>
                     </Fragment>
@@ -159,7 +157,7 @@ export default class Endgame extends Component {
 class CategoryChart extends Component {
     componentDidMount() {
         var ctx = document.getElementById("myChart");
-	    drawChart(this.props.categoryNum, ctx, Chart);
+        drawChart(this.props.stats, ctx, Chart);
     }
     
     render() {
@@ -172,16 +170,16 @@ class CategoryChart extends Component {
     }
 }
 
-// TODO: Send either all animals or have the data ready
 
 class PopularityReport extends Component {
 
     render() {
-        var mostLikedId = this.props.liked;
-        var leastLikedId = this.props.disliked;
+        var animals = this.props.animals;
+        var mostLikedId = parseInt(this.props.data.liked);
+        var leastLikedId = parseInt(this.props.data.disliked);
 
-        var mostLikedAnimal = this.props.animals.filter(animal => animal.id === mostLikedId)[0];
-        var leastLikedAnimal = this.props.animals.filter(animal => animal.id === leastLikedId)[0];
+        var mostLikedAnimal = animals.filter(animal => animal.id === mostLikedId)[0];
+        var leastLikedAnimal = animals.filter(animal => animal.id === leastLikedId)[0];
 
         var mostLikedName = mostLikedAnimal.name;
         var leastLikedName = leastLikedAnimal.name;
@@ -193,23 +191,23 @@ class PopularityReport extends Component {
         var leastLikedImg = `/images/${leastLikedSlug}.jpg`;
           
         return (
+
             <Fragment>
-                <p>Users have judged...</p>
-                <table>
-                    <tr>
-                        <td>
-                            <p>{leastLikedName}</p>
-                            <p><img src={leastLikedImg}/></p>
-                        </td>
-                        <td>
+                <p class="youdisliked">Animal Bastards users have judged</p>
+                <div class="winners">
+                <div class="winner">
                             <p>{mostLikedName}</p>
                             <p><img src={mostLikedImg}/></p>
-                        </td>
-                    </tr>
-                </table>
-
+                            <p>is an utter bastard</p>
+                </div>
+                <div class="winner">
+                            <p>{leastLikedName}</p>
+                            <p><img src={leastLikedImg}/></p>
+                            <p>is definitely <em>not</em> a bastard</p>
+                </div>
+                </div>
             
-            <button onClick={this.reset}>
+            <button className="choiceButton notBastardButton wriggly brown" onClick={this.reset}>
                 Play Again?
             </button>
             </Fragment>

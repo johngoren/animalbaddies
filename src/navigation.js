@@ -20,7 +20,7 @@ export default class Navigation extends Component {
                 <li>
                     <a onClick={this.props.toggleSound} href="#">Mute</a>
                 </li>
-                <li className="count">{textIndex}/15</li>     
+                <li className="count last">{textIndex}/15</li>     
             </ul>
         )
     }
