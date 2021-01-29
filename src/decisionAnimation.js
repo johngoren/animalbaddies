@@ -11,8 +11,8 @@ export default class DecisionAnimation extends Component {
 
         if (status === "departure") {
             return (
-                <div class="decision">
-                    <div class={className}>{text}</div>
+                <div className="decision">
+                    <div className={className}>{text}</div>
                 </div>
             )    
         }

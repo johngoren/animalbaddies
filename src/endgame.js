@@ -193,14 +193,12 @@ class PopularityReport extends Component {
                 <p class="youdisliked">Animal Bastards users have judged</p>
                 <div class="winners">
                 <div class="winner">
-                            <p>{mostLikedName}</p>
-                            <p><img src={mostLikedImg}/></p>
-                            <p>is an utter bastard</p>
+                        <p><img src={mostLikedImg} className="animalPortrait"/><br/>
+                        <span className="winnerName">{mostLikedName}</span><span className="consensus"> is an utter bastard</span></p>
                 </div>
                 <div class="winner">
-                            <p>{leastLikedName}</p>
-                            <p><img src={leastLikedImg}/></p>
-                            <p>is definitely <em>not</em> a bastard</p>
+                            <p><img src={leastLikedImg} className="animalPortrait"/><br/>
+                            <span className="winnerName">{leastLikedName}</span><span className="consensus"> is definitely <em>not</em> a bastard</span></p>
                 </div>
                 </div>
             
@@ -213,3 +211,4 @@ class PopularityReport extends Component {
 
 
 }
+ 

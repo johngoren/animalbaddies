@@ -1,9 +1,0 @@
-html
-
-	head
-		title Animal Bastards
-		link(rel='stylesheet', href='/styles/app.css', type='text/css')
-		link(rel='stylesheet', href='/styles/tingle.css', type='text/css')
-	body
-		div#root
-		script(src='/dist/main.js')
