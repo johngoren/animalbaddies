@@ -1,3 +1,7 @@
+body {
+  margin: 0;
+}
+
 .App {
   text-align: center;
 }
@@ -46,7 +50,7 @@ p {
 .nav li {
   float: left;
   font-size: 14px;
-  padding-top: 20px;
+  padding-top: 15px;
   padding-left: 20px;
 }
 
@@ -296,6 +300,11 @@ Buttons
 
 .brown {
   background-color: rgb(117, 117, 116);
+}
+
+.winner img {
+  border-radius: 25px;
+  width: 250px;
 }
 
 /**

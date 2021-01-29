@@ -83,9 +83,6 @@ export default class Endgame extends Component {
         })
     }
 
-    reset() {
-        window.location.reload();
-    }
 
       // MARK: Statistical data from DB
 
@@ -207,7 +204,7 @@ class PopularityReport extends Component {
                 </div>
                 </div>
             
-            <button className="choiceButton notBastardButton wriggly brown" onClick={this.reset}>
+            <button className="choiceButton notBastardButton wriggly brown" onClick={() => window.location.reload()}>
                 Play Again?
             </button>
             </Fragment>
