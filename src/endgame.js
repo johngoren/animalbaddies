@@ -1,5 +1,4 @@
 import React, { Component, Fragment, useEffect } from 'react';
-import ScriptTag from 'react-script-tag';
 import axios from 'axios';
 import Chart from 'chart.js';
 import drawChart from './drawChart.js';
@@ -160,7 +159,6 @@ class CategoryChart extends Component {
     render() {
         return (
             <Fragment>
-                <ScriptTag isHydrating={true} src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"/>
                 <canvas id="myChart"/>
             </Fragment>
         )
@@ -190,13 +188,13 @@ class PopularityReport extends Component {
         return (
 
             <Fragment>
-                <p class="youdisliked">Animal Bastards users have judged</p>
-                <div class="winners">
-                <div class="winner">
+                <p className="youdisliked">Animal Bastards users have judged</p>
+                <div className="winners">
+                <div className="winner">
                         <p><img src={mostLikedImg} className="animalPortrait"/><br/>
                         <span className="winnerName">{mostLikedName}</span><span className="consensus"> is an utter bastard</span></p>
                 </div>
-                <div class="winner">
+                <div className="winner">
                             <p><img src={leastLikedImg} className="animalPortrait"/><br/>
                             <span className="winnerName">{leastLikedName}</span><span className="consensus"> is definitely <em>not</em> a bastard</span></p>
                 </div>
