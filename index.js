@@ -3,6 +3,8 @@ const app = express()
 const port = 3000
 const mysql = require('mysql')
 const favicon = require('serve-favicon');
+const args = require('minimist')(process.argv.slice(2))
+const DEBUG_MODE = args['debug'] === 'true' ? true : false;
 
 app.set('view engine', 'pug')
 app.use(express.static(__dirname + '/public'));
@@ -43,13 +45,21 @@ app.get('/popularity', (req, res) => {
 
 app.listen(port, () => {
     console.log(`Animal Bastards listening at http://localhost:${port}`)
+    if (DEBUG_MODE) {
+        console.log('Debug mode is on');
+    }
 });
 
 
-// Records that the user ended up in category :category
+// Posts that the user ended up in category :category
 
 app.post('/category/:category', (req, res) => {
     var category = req.params.category;
+
+    if (DEBUG_MODE) {
+        console.log(`User is posting that they ended up in category ${category}`)
+    }
+
     var unixDate = Math.floor(Date.now() / 1000);
 
     var intCategory = parseInt(category);
@@ -123,6 +133,7 @@ async function getAllStats() {
     }
 }
 
+// Retrieves tally of users in categories
 
 function getStatsFromDB(callback) {
     return new Promise(resolve => {
@@ -147,9 +158,20 @@ function getStatsFromDB(callback) {
                             tallies[results[i].category - 1]++;
                         }
 
+                        if (DEBUG_MODE) {
+                            console.log("Category tallies:");
+                            console.log(tallies);
+                        }
+
                         for (i=0; i < percentages.length; i++) {
                             percentages[i] = tallies[i] / total * 100;
                         }
+
+                        if (DEBUG_MODE) {
+                            console.log("Percentage tallies:");
+                            console.log(percentages);
+                        }
+
                         resolve(percentages);
                     }
                 });

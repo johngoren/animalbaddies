@@ -91,8 +91,10 @@ export default class Endgame extends Component {
     render() {
         let {animals, countBastard} = this.props;
         let data = this.data.stats;
-        let percentageDisliked = this.calculateDislikedPercentage(countBastard);
+        let percentageDisliked = this.calculateDislikedPercentage(countBastard);    // In test mode this may skew
+        console.log(`Your percentage disliked was ${percentageDisliked}`);
         let categoryNum = this.getCategoryNumFromPercentage(percentageDisliked);
+        console.log(`You fell into category ${categoryNum}`);
         this.postCategoryToServer(categoryNum);
         
         let Content;
@@ -144,14 +146,12 @@ export default class Endgame extends Component {
     // MARK: Network
 
     postCategoryToServer = (category) => {  
-        axios.post('/category/' + category)
-            .then(function(response) {
-                testLog(`Posted category ${category} to server}`)
-                testLog(response);
-            })
-            .catch(function(error) {
-                testLog(response);
-            });
+        try {
+            axios.post('/category/' + category)
+        }
+        catch(e) {
+            console.log(e);
+        }
     }
    
 }

@@ -2,7 +2,7 @@ export default function drawChart(stats, ctx, Chart) {
     var myChart = new Chart(ctx, {
 	type: 'bar',
 	data: {
-	    labels: ['Animal Alarmist', 'Animal Critic', 'Animal Agnostic', 'Animal Advocate', 'True Forest Friend'],
+		labels: ['True Forest Friend', 'Animal Advocate', 'Animal Agnostic', 'Animal Critic', 'Animal Alarmist'],
 	    datasets: [{
 		label: '# of Votes',
 		data: stats,

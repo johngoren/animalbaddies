@@ -21,9 +21,7 @@ import {
     NOT_BASTARD
 } from './constants';
 
-const args = require('minimist')(process.argv.slice(2))
-
-const DEBUG_MODE = getDebugMode();
+const DEBUG_MODE = true;
 const CARD_ARRIVAL = "flip-in-hor-bottom"
 const CARD_DEPARTURE_RIGHT = "roll-out-right";
 const CARD_DEPARTURE_LEFT = "roll-out-left";
@@ -38,7 +36,6 @@ else {
   NUM_QUESTIONS = 15;
 }
 
-const DEBUG_MODE = args['debug'] === 'true' ? true : false;
 
 export default class App extends Component {
 
