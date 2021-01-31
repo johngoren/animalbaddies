@@ -10,7 +10,7 @@ export default class Navigation extends Component {
 
     render() {
         const {currentIndex} = this.props;
-	const textIndex = parseInt(currentIndex) + 1;
+	    const textIndex = parseInt(currentIndex) + 1;
 	
         return (
             <ul className="nav">

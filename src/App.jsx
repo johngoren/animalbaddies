@@ -21,7 +21,7 @@ import {
     NOT_BASTARD
 } from './constants';
 
-const DEBUG_MODE = true;
+const DEBUG_MODE = false;
 const CARD_ARRIVAL = "flip-in-hor-bottom"
 const CARD_DEPARTURE_RIGHT = "roll-out-right";
 const CARD_DEPARTURE_LEFT = "roll-out-left";
@@ -371,9 +371,10 @@ export default class App extends Component {
       Content = (
         <div className="flex">
         <StatsInterlude
-        animals = {animals}
-        animation={animation}
-        handlerForNextAnimal={()=> {
+          animals = {animals}
+          animation={animation}
+          currentIndex={this.state.currentIndex}
+          handlerForNextAnimal={()=> {
           this.setState({
             animation: CARD_DEPARTURE_RIGHT,
             status: "finishedStats",

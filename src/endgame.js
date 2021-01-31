@@ -1,4 +1,4 @@
-import React, { Component, Fragment, useEffect } from 'react';
+import React, { Component, Fragment } from 'react';
 import axios from 'axios';
 import Chart from 'chart.js';
 import drawChart from './drawChart.js';
@@ -95,7 +95,9 @@ export default class Endgame extends Component {
         console.log(`Your percentage disliked was ${percentageDisliked}`);
         let categoryNum = this.getCategoryNumFromPercentage(percentageDisliked);
         console.log(`You fell into category ${categoryNum}`);
-        this.postCategoryToServer(categoryNum);
+        if (this.state.page === 0) {
+            this.postCategoryToServer(categoryNum);
+        }
         
         let Content;
         let categoryTitle = this.getCategoryTitle(categoryNum);

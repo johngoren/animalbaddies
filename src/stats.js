@@ -7,26 +7,29 @@ import React, { Component } from 'react';
 export default class StatsInterlude extends Component {
 
   render() {
-    var {stats, statsModeToggle} = this.props;
+    const {currentIndex, stats, statsModeToggle} = this.props;
     let { liked, disliked } = stats;
-    const likedText = liked.map((item) => <li>{item}</li>)
-    const dislikedText = disliked.map((item) => <li>{item}</li>)
+    const likedText = liked.map((item) => <li>{item}</li>).slice(0, 2);
+    const dislikedText = disliked.map((item) => <li>{item}</li>).slice(0, 2);
+    const remaining = 15 - currentIndex - 1;
 
     return (
         <div className={"App-card stats-card " + this.props.animation}>
           { statsModeToggle === true &&
             <div>
-            <p><span class="youDisliked">You liked animals who were</span></p>
-            <ul class="facts-text">
-            {dislikedText}
-            </ul>
+              <p>Good work. {remaining} more animals to go. So far, you've liked animals that have these traits:</p>
+              <ul className="facts-text">
+                {dislikedText}
+              </ul>
+              <p>What do you think this says about you?</p>
             </div>
           }
           { statsModeToggle === false &&
             <div>
-               <p><span class="youDisliked">You disliked animals who were</span></p>
-               <ul class="facts-text">
-               {likedText}
+               <p>Great work. {remaining} more animals to go. So far, you've disliked animals that have these traits</p>
+               <ul className="facts-text">
+                {likedText}
+               <p>Worth thinking about.</p>
                </ul>
             </div>
           }
@@ -34,9 +37,8 @@ export default class StatsInterlude extends Component {
             onClick={this.props.handlerForNextAnimal}
             className="notBastardButton choiceButton wriggly"
           >
-            Proceed
+            Continue
           </button>
-
         </div>
       )
     }

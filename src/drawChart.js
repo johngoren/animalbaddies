@@ -4,7 +4,7 @@ export default function drawChart(stats, ctx, Chart) {
 	data: {
 		labels: ['True Forest Friend', 'Animal Advocate', 'Animal Agnostic', 'Animal Critic', 'Animal Alarmist'],
 	    datasets: [{
-		label: '# of Votes',
+		label: 'number of users',
 		data: stats,
 		backgroundColor: [
 		    'rgba(255, 99, 132, 0.2)',

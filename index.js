@@ -163,16 +163,7 @@ function getStatsFromDB(callback) {
                             console.log(tallies);
                         }
 
-                        for (i=0; i < percentages.length; i++) {
-                            percentages[i] = tallies[i] / total * 100;
-                        }
-
-                        if (DEBUG_MODE) {
-                            console.log("Percentage tallies:");
-                            console.log(percentages);
-                        }
-
-                        resolve(percentages);
+                        resolve(tallies);
                     }
                 });
             }
