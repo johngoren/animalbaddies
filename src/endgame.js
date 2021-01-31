@@ -12,7 +12,7 @@ export default class Endgame extends Component {
         this.data = this.getDataFromPage();
     }
       
-    calculateDisliked(disliked) {
+    calculateDislikedPercentage(disliked) {
         return Math.floor(disliked / 15 * 100);
     }
 
@@ -82,7 +82,6 @@ export default class Endgame extends Component {
         })
     }
 
-
       // MARK: Statistical data from DB
 
     getDataFromPage = () => {
@@ -92,7 +91,7 @@ export default class Endgame extends Component {
     render() {
         let {animals, countBastard} = this.props;
         let data = this.data.stats;
-        let percentageDisliked = this.calculateDisliked(countBastard);
+        let percentageDisliked = this.calculateDislikedPercentage(countBastard);
         let categoryNum = this.getCategoryNumFromPercentage(percentageDisliked);
         this.postCategoryToServer(categoryNum);
         
@@ -144,8 +143,15 @@ export default class Endgame extends Component {
 
     // MARK: Network
 
-    postCategoryToServer = (category) => {
-        axios.post('/category/' + category);
+    postCategoryToServer = (category) => {  
+        axios.post('/category/' + category)
+            .then(function(response) {
+                testLog(`Posted category ${category} to server}`)
+                testLog(response);
+            })
+            .catch(function(error) {
+                testLog(response);
+            });
     }
    
 }
@@ -169,21 +175,21 @@ class CategoryChart extends Component {
 class PopularityReport extends Component {
 
     render() {
-        var animals = this.props.animals;
-        var mostLikedId = parseInt(this.props.data.liked);
-        var leastLikedId = parseInt(this.props.data.disliked);
+        const animals = this.props.animals;
+        const mostLikedId = parseInt(this.props.data.liked);
+        const leastLikedId = parseInt(this.props.data.disliked);
 
-        var mostLikedAnimal = animals.filter(animal => animal.id === mostLikedId)[0];
-        var leastLikedAnimal = animals.filter(animal => animal.id === leastLikedId)[0];
+        const mostLikedAnimal = animals.filter(animal => animal.id === mostLikedId)[0];
+        const leastLikedAnimal = animals.filter(animal => animal.id === leastLikedId)[0];
 
-        var mostLikedName = mostLikedAnimal.name;
-        var leastLikedName = leastLikedAnimal.name;
+        const mostLikedName = mostLikedAnimal.name;
+        const leastLikedName = leastLikedAnimal.name;
 
-        var mostLikedSlug = mostLikedAnimal.slug;
-        var leastLikedSlug = leastLikedAnimal.slug;
+        const mostLikedSlug = mostLikedAnimal.slug;
+        const leastLikedSlug = leastLikedAnimal.slug;
 
-        var mostLikedImg = `/images/${mostLikedSlug}.jpg`;
-        var leastLikedImg = `/images/${leastLikedSlug}.jpg`;
+        const mostLikedImg = `/images/${mostLikedSlug}.jpg`;
+        const leastLikedImg = `/images/${leastLikedSlug}.jpg`;
           
         return (
 
@@ -201,12 +207,17 @@ class PopularityReport extends Component {
                 </div>
             
             <button className="choiceButton notBastardButton wriggly brown" onClick={() => window.location.reload()}>
-                Play Again?
+                Play again with new animals
             </button>
             </Fragment>
         )
     }
 
+}
 
+function testLog(stuff) {
+    if (DEBUG_MODE) {
+        console.log(stuff);
+    }
 }
  

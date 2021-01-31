@@ -16,7 +16,7 @@ export default class StatsInterlude extends Component {
         <div className={"App-card stats-card " + this.props.animation}>
           { statsModeToggle === true &&
             <div>
-            <p><span class="youDisliked">You disliked animals who were</span></p>
+            <p><span class="youDisliked">You liked animals who were</span></p>
             <ul class="facts-text">
             {dislikedText}
             </ul>
@@ -24,7 +24,7 @@ export default class StatsInterlude extends Component {
           }
           { statsModeToggle === false &&
             <div>
-               <p><span class="youDisliked">You liked animals who were</span></p>
+               <p><span class="youDisliked">You disliked animals who were</span></p>
                <ul class="facts-text">
                {likedText}
                </ul>

@@ -1,14 +1,14 @@
 const express = require('express')
 const app = express()
-const path = require('path')
 const port = 3000
 const mysql = require('mysql')
-
+const favicon = require('serve-favicon');
 
 app.set('view engine', 'pug')
 app.use(express.static(__dirname + '/public'));
 app.use("/dist", express.static(__dirname + '/dist'));
 app.use("/styles", express.static(__dirname + '/styles'));
+app.use(favicon(__dirname + '/public/images/favicon.ico'));
 
 var DB_HOST = "mysql.gorenfeld.net";
 var DB_USER = "animalstats";
@@ -19,7 +19,8 @@ var pool = mysql.createPool({
     host: DB_HOST,
     user: DB_USER,
     password: DB_PASSWORD,
-    database: DB_DATABASE
+    database: DB_DATABASE,
+    connectionLimit: 9999
 })
 
 app.get('/', (req, res) => {
@@ -63,6 +64,7 @@ app.post('/category/:category', (req, res) => {
     pool.getConnection(function(err, con) {
 
         con.query("INSERT INTO stats VALUES(" + unixDate + ", " + category + ")", function(error, results, fields) {
+            con.release();
             if (error) {
                 res.send(error);
             }
@@ -88,6 +90,7 @@ app.post('/vote/:id/:liked', (req, res) => {
     pool.getConnection(function(err, con) {
 
         con.query("INSERT INTO votes VALUES(" + unixDate + ", " + id + "," + liked + ")", function(error, results, fields) {
+            con.release();
             if (error) {
                 res.send(error);
             }
@@ -105,20 +108,24 @@ app.post('/vote/:id/:liked', (req, res) => {
 // Begin: DB
 
 async function getAllStats() {
-    var votes = await getVotesFromDB();
-    var popularity = getPopularityFromVotes(votes);
-    var stats = await getStatsFromDB();
-
-    return {
-        stats: stats,
-        popularity: popularity
-    } 
+    try {
+        var votes = await getVotesFromDB();
+        var popularity = getPopularityFromVotes(votes);
+        var stats = await getStatsFromDB();
+    
+        return {
+            stats: stats,
+            popularity: popularity
+        }     
+    }
+    catch(e) {
+        console.log(e);
+    }
 }
 
 
 function getStatsFromDB(callback) {
     return new Promise(resolve => {
-
 
         pool.getConnection(function(err, con) {
 
@@ -127,6 +134,7 @@ function getStatsFromDB(callback) {
             }
             else {
                 con.query("SELECT * FROM stats", function(error, results, fields) {
+                    con.release();
                     if (error) {
                         resolve(error);
                     }
@@ -162,6 +170,7 @@ function getVotesFromDB() {
             }
             else {
                 con.query("SELECT * FROM votes", function(error, results, fields) {
+                    con.release();
                     if (error) {
                         throw error;
                     }

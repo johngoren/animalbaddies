@@ -21,31 +21,31 @@ import {
     NOT_BASTARD
 } from './constants';
 
-var TEST_MODE = true;
+const args = require('minimist')(process.argv.slice(2))
 
-let CARD_ARRIVAL = "flip-in-hor-bottom"
-let CARD_DEPARTURE_RIGHT = "roll-out-right";
-let CARD_DEPARTURE_LEFT = "roll-out-left";
-let TRANSITION_DURATION = 1300;
-let CARDS_BETWEEN_STATS = 6;
+const DEBUG_MODE = getDebugMode();
+const CARD_ARRIVAL = "flip-in-hor-bottom"
+const CARD_DEPARTURE_RIGHT = "roll-out-right";
+const CARD_DEPARTURE_LEFT = "roll-out-left";
+const TRANSITION_DURATION = 1300;
+const CARDS_BETWEEN_STATS = 6;
 let NUM_QUESTIONS;
 
-if (TEST_MODE) {
+if (DEBUG_MODE) {
   NUM_QUESTIONS = 2;
 }
 else {
   NUM_QUESTIONS = 15;
 }
 
+const DEBUG_MODE = args['debug'] === 'true' ? true : false;
 
 export default class App extends Component {
 
   constructor(props) {
     super();
 
-    this.isDeviceAppropriate();
-
-    let animals = importerAnimals(data);
+    const animals = importerAnimals(data);
     this.animals = shuffle(animals);
 
     this.state = {
@@ -93,7 +93,7 @@ export default class App extends Component {
       })
     }
 
-    // This must be the user's second reaction, then.
+    // "This must be the user's second reaction, then."
     if (newChoice === oldChoice) {
       // User has considered the evidence and submits a final decision
       return this.segueToNextScreenWithDecision(newChoice)
@@ -216,23 +216,6 @@ export default class App extends Component {
 
  
   
-  // MARK: Helpers
-
-  isDeviceAppropriate = () => {
-    if (/Mobi|Android/i.test(navigator.userAgent)) {
-    alert("Animal Bastards is best experienced on desktops and on tablets in landscape mode.");
-    }
-  }
-
-  buildImageURL = (slug) => {
-    return `/images/${slug}.jpg`; 
-  }
-
-  shouldGoToStatsInterlude = ()=> {
-    const remainder = (this.state.currentIndex + 1) % CARDS_BETWEEN_STATS;
-    return ((remainder === 0) ? true : false);
-  }
-
   
   // MARK: Sounds
 
@@ -309,7 +292,7 @@ export default class App extends Component {
     axios.post('/vote/' + animalId + '/' + liked);
   }
 
-  // MARK: Stats
+  // MARK: Stats interlude
 
   calcStats = ()=> {
     const { animals } = this;
@@ -325,7 +308,9 @@ export default class App extends Component {
     }
   }
 
-
+  componentDidMount() {
+    jQuery('.welcome-card').fadeIn(4000);
+  }
 
   render() {
     const { 
@@ -480,8 +465,15 @@ export default class App extends Component {
     );
   }
 
-  
+  // MARK: Helpers
 
+  buildImageURL = (slug) => {
+    return `/images/${slug}.jpg`; 
+  }
 
+  shouldGoToStatsInterlude = ()=> {
+    const remainder = (this.state.currentIndex + 1) % CARDS_BETWEEN_STATS;
+    return ((remainder === 0) ? true : false);
+  }
 
 }

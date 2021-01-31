@@ -105,6 +105,11 @@ p {
   border: 1px solid #ddd;
   color: black;
   padding: 60px;
+  display: none;
+}
+
+.about h2, .about h3 {
+  font-family: 'Montserrat', serif;
 }
 
 
