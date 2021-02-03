@@ -2,6 +2,10 @@ import React, { Component, Fragment } from 'react';
 
 export default class Welcome extends Component {
 
+    componentDidMount() {
+        jQuery('.welcome-card').fadeIn(4000);
+    }
+
     render() {
 
         return (

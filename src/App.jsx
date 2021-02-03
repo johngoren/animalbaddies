@@ -51,6 +51,7 @@ const initialState = {
   stats: null,
   statsInterludeIsOn: false,
   statsModeToggle: false,
+  status: null,
   votes: [],
   welcomeMode: true
 }
@@ -478,9 +479,7 @@ export default class App extends Component {
   }
 
   onReset = ()=> {
-    console.log("Reset!");
     const resetState = this.getResetState(initialState);
-    console.log(resetState);
     this.setState(resetState);
   }
 
