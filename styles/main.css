@@ -9,6 +9,8 @@ body {
 
 p {
   color: black;
+  font-size: 16px;
+  font-family: 'Merriweather', serif;
 }
 
 .Animal-portrait {
@@ -104,14 +106,19 @@ p {
   border-radius: 10px;
   border: 1px solid #ddd;
   color: black;
-  padding: 60px;
+  padding: 20px 60px 60px 60px;
   display: none;
 }
 
-.about h2, .about h3 {
-  font-family: 'Montserrat', serif;
+h1, h2 {
+  color: black;
+  font-size: 32px;
+  font-family: 'Montserrat', sans-serif;
 }
 
+.welcome-card {
+  font-family: 'Merriweather', serif;
+}
 
 .stats-card {
   color: #000;
@@ -331,6 +338,10 @@ Buttons
   height: 100px;
   object-fit: cover;
   margin-bottom: 10px;
+}
+
+#myChart {
+  padding-bottom: 50px;
 }
 
 /**

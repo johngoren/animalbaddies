@@ -89,13 +89,12 @@ export default class Endgame extends Component {
     }
 
     render() {
+        let {page} = this.state;
         let {animals, countBastard} = this.props;
         let data = this.data.stats;
         let percentageDisliked = this.calculateDislikedPercentage(countBastard);    // In test mode this may skew
-        console.log(`Your percentage disliked was ${percentageDisliked}`);
         let categoryNum = this.getCategoryNumFromPercentage(percentageDisliked);
-        console.log(`You fell into category ${categoryNum}`);
-        if (this.state.page === 0) {
+        if (page === 0) {
             this.postCategoryToServer(categoryNum);
         }
         
@@ -103,11 +102,11 @@ export default class Endgame extends Component {
         let categoryTitle = this.getCategoryTitle(categoryNum);
         let categoryBlurb = this.getCategoryBlurb(categoryNum);   
 
-        switch(this.state.page) {
+        switch(page) {
             case 0:
                 Content = (
                     <Fragment>
-                        <p className="youdisliked">You are {categoryTitle}</p>
+                        <h1>You Are {categoryTitle}</h1>
                         <CategoryChart
                             categoryNum={categoryNum}
                             stats={data.stats}
@@ -121,7 +120,7 @@ export default class Endgame extends Component {
             case 1:
                 Content = (
                     <Fragment>
-                        <p className="youdisliked">You are {categoryTitle}</p>
+                        <h1>You are {categoryTitle}</h1>
                         <p>{categoryBlurb}</p>
                         <button className="choiceButton notBastardButton wriggly brown" onClick={this.proceed}
                             >Next
@@ -134,6 +133,7 @@ export default class Endgame extends Component {
                     <PopularityReport
                         animals={animals}
                         data={data.popularity}
+                        onReset={this.props.onReset}
                     />
                 )
         }
@@ -196,7 +196,7 @@ class PopularityReport extends Component {
         return (
 
             <Fragment>
-                <p className="youdisliked">Animal Bastards users have judged</p>
+                <h1>Animal Bastards users<br/>have judged</h1>
                 <div className="winners">
                 <div className="winner">
                         <p><img src={mostLikedImg} className="animalPortrait"/><br/>
@@ -208,7 +208,7 @@ class PopularityReport extends Component {
                 </div>
                 </div>
             
-            <button className="choiceButton notBastardButton wriggly brown" onClick={() => window.location.reload()}>
+            <button className="choiceButton notBastardButton wriggly brown" onClick={this.props.onReset}>
                 Play again with new animals
             </button>
             </Fragment>

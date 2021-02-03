@@ -70,7 +70,7 @@
   },
   "scripts": {
     "start": "NODE_ENV=production BABEL_ENV=production node index.js",
-    "clara": "NODE_ENV=production BABEL_ENV=production npx webpack",
+    "compile": "NODE_ENV=production BABEL_ENV=production npx webpack",
     "test": "node scripts/test.js"
   },
   "eslintConfig": {

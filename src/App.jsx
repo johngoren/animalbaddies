@@ -21,7 +21,7 @@ import {
     NOT_BASTARD
 } from './constants';
 
-const DEBUG_MODE = false;
+const DEBUG_MODE = true;
 const CARD_ARRIVAL = "flip-in-hor-bottom"
 const CARD_DEPARTURE_RIGHT = "roll-out-right";
 const CARD_DEPARTURE_LEFT = "roll-out-left";
@@ -36,6 +36,25 @@ else {
   NUM_QUESTIONS = 15;
 }
 
+const initialState = {
+  animation: "flip-in-hor-bottom",
+  backgroundColor: '#000',
+  countBastard: 0,
+  countNotBastard: 0,
+  endgameMode: false,
+  modalIsOpen: false,
+  musicIsPlaying: false,
+  muted: false,
+  oldChoice: null,
+  changedMind: null,
+  currentIndex: 0,
+  stats: null,
+  statsInterludeIsOn: false,
+  statsModeToggle: false,
+  votes: [],
+  welcomeMode: true
+}
+
 
 export default class App extends Component {
 
@@ -45,24 +64,7 @@ export default class App extends Component {
     const animals = importerAnimals(data);
     this.animals = shuffle(animals);
 
-    this.state = {
-      animation: "flip-in-hor-bottom",
-      backgroundColor: '#000',
-      countBastard: 0,
-      countNotBastard: 0,
-      endgameMode: false,
-      modalIsOpen: false,
-      musicIsPlaying: false,
-      muted: false,
-      oldChoice: null,
-      changedMind: null,
-      currentIndex: 0,
-      stats: null,
-      statsInterludeIsOn: false,
-      statsModeToggle: false,
-      votes: [],
-      welcomeMode: true
-    }
+    this.state = initialState;
 
     this.setBackgroundColorForAnimal(0);
     this.setupModal();
@@ -346,6 +348,7 @@ export default class App extends Component {
               animals={animals}
               countBastard={countBastard}
               data={this.data}
+              onReset={()=>this.onReset()}
             />
           </div></div>
       )
@@ -472,6 +475,20 @@ export default class App extends Component {
   shouldGoToStatsInterlude = ()=> {
     const remainder = (this.state.currentIndex + 1) % CARDS_BETWEEN_STATS;
     return ((remainder === 0) ? true : false);
+  }
+
+  onReset = ()=> {
+    console.log("Reset!");
+    const resetState = this.getResetState(initialState);
+    console.log(resetState);
+    this.setState(resetState);
+  }
+
+  getResetState = ()=> {
+    const oldMutedState = this.state.muted;
+    let resetState = initialState;
+    resetState["muted"] = oldMutedState;
+    return resetState;
   }
 
 }

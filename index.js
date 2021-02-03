@@ -44,7 +44,7 @@ app.get('/popularity', (req, res) => {
 });
 
 app.listen(port, () => {
-    console.log(`Animal Bastards listening at http://localhost:${port}`)
+    console.log(`Animal Bastards listening at https://localhost:${port}`)
     if (DEBUG_MODE) {
         console.log('Debug mode is on');
     }
