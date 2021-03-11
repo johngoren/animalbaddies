@@ -24,6 +24,9 @@ export default function drawChart(stats, ctx, Chart) {
 	    }]
 	},
 	options: {
+		legend: {
+			position: 'left'	
+		},
 	   scales: {
 		yAxes: [{
 		    ticks: {

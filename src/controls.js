@@ -7,6 +7,10 @@ import { BASTARD, NOT_BASTARD } from './constants';
 
 export default class Controls extends Component {
 
+	componentDidMount() {
+		this.props.playMusicIfNeeded();
+	}
+
     render() {
 		let { backgroundColor, choice } = this.props;
 		var bastardLabel = "Bastard";

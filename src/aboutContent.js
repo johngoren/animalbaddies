@@ -3,7 +3,7 @@ const html =
 `
 <div class='about'>
 <h2>Animal Bastards</h2>
-by <a href="https://www.linkedin.com/in/john-gorenfeld-268736178/">John Gorenfeld</a> and Dr. Mary Cavanagh
+<p>by <a href="https://www.gorenfeld.net/">John Gorenfeld</a> and <a href="https://twitter.com/marycavsbrain?lang=en">Dr. Mary Cavanagh</a></p>
 
 <h3>About Animal Bastards</h3>
 
@@ -12,7 +12,7 @@ by <a href="https://www.linkedin.com/in/john-gorenfeld-268736178/">John Gorenfel
 
 <h3>Privacy</h3>
 
-We collect no personal information and use no trackers. All we store is anonymous stats on how many people think animals are bastards.
+<p>We collect no personal information and use no trackers. All we store is anonymous stats on how many people think animals are bastards.</p>
 
 <h3>Photo Credits</h3>
 
@@ -65,6 +65,11 @@ We collect no personal information and use no trackers. All we store is anonymou
 <p>Wolf spider: By Michael Palmer - Own work, CC BY-SA 4.0, <a href="https://commons.wikimedia.org/w/index.php?curid=36838276">original</a></p>
 <p>Wombat: By JJ Harrison (jjharrison89@facebook.com) - Own work, CC BY-SA 3.0, <a href="https://commons.wikimedia.org/w/index.php?curid=8661812">original</a></p>
 <p>Zebra: By Muhammad Mahdi Karim - Own work, GFDL 1.2, <a href="https://commons.wikimedia.org/w/index.php?curid=10729821">original</a></p>
+
+<h3>Music</h3>
+
+<p>"It's Not Over 'Til The Bossa Nova," <a href="https://www.silvermansound.com">SilvermanSound.com</a></p>
+
 </div>`
 
 

@@ -26,9 +26,8 @@ var pool = mysql.createPool({
 })
 
 app.get('/', (req, res) => {
-    let animal = req.query.animal;
     getAllStats().then(function(stats) {
-        res.render('index', { stats: stats, animal: animal });
+        res.render('index', { stats: stats });
     });
 })
 
@@ -43,6 +42,10 @@ app.get('/popularity', (req, res) => {
         res.send(getPopularityFromVotes(result));        
     })
 });
+
+
+
+
 
 app.listen(port, () => {
     console.log(`Animal Bastards listening at https://localhost:${port}`)

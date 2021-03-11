@@ -178,8 +178,10 @@ class PopularityReport extends Component {
 
     render() {
         const animals = this.props.animals;
-        const mostLikedId = parseInt(this.props.data.liked);
-        const leastLikedId = parseInt(this.props.data.disliked);
+
+        // TODO: We think these are backwards
+        const mostLikedId = parseInt(this.props.data.disliked);
+        const leastLikedId = parseInt(this.props.data.liked);
 
         const mostLikedAnimal = animals.filter(animal => animal.id === mostLikedId)[0];
         const leastLikedAnimal = animals.filter(animal => animal.id === leastLikedId)[0];

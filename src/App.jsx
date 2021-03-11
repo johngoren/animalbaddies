@@ -21,7 +21,7 @@ import {
     NOT_BASTARD
 } from './constants';
 
-const DEBUG_MODE = true;
+const DEBUG_MODE = false;
 const CARD_ARRIVAL = "flip-in-hor-bottom"
 const CARD_DEPARTURE_RIGHT = "roll-out-right";
 const CARD_DEPARTURE_LEFT = "roll-out-left";
@@ -64,13 +64,10 @@ export default class App extends Component {
 
     const animals = importerAnimals(data);
     this.animals = shuffle(animals);
-
     this.state = initialState;
-
     this.setBackgroundColorForAnimal(0);
     this.setupModal();
   }
-
   
   incrementCountForDecision = (isBastard) => {
     let { countNotBastard, countBastard } = this.state;
@@ -129,7 +126,6 @@ export default class App extends Component {
     let normalCompletion = () => {
       this.setBackgroundColorForAnimal(currentIndex + 1);
       this.playSoundForDecision(isBastard);
-      this.playMusicIfNeeded();
       setTimeout( ()=> 
         this.setStateForNewAnimal(currentIndex + 1),
         TRANSITION_DURATION);
@@ -187,7 +183,9 @@ export default class App extends Component {
   }
 
   setStateForNewAnimal(newIndex) {
-      if (newIndex === NUM_QUESTIONS) {
+    this.updateUrlForNewAnimal(newIndex);
+
+    if (newIndex === NUM_QUESTIONS) {
       this.setState({
         endgameMode: true
       });
@@ -220,6 +218,10 @@ export default class App extends Component {
   // MARK: Sounds
 
   playMusicIfNeeded = () => {
+    if (this.state.muted) {
+      return;
+    }
+
     if (!this.state.musicIsPlaying) {
       document.getElementById("bossanova").play();
       this.setState({
@@ -257,6 +259,7 @@ export default class App extends Component {
     this.setState({
       welcomeMode: false
     })
+    this.updateUrlForNewAnimal(0);
   }
   
 
@@ -306,10 +309,6 @@ export default class App extends Component {
         statsModeToggle: !statsModeToggle
       }) 
     }
-  }
-
-  componentDidMount() {
-    jQuery('.welcome-card').fadeIn(4000);
   }
 
   render() {
@@ -419,6 +418,7 @@ export default class App extends Component {
                   backgroundColor={backgroundColor}
                   className="App-controls" 
                   choice={oldChoice} handler={this.madeChoice}
+                  playMusicIfNeeded={this.playMusicIfNeeded}
                   showOn={NOT_BASTARD}
                   />
               </div>
@@ -479,8 +479,10 @@ export default class App extends Component {
   }
 
   onReset = ()=> {
-    const resetState = this.getResetState(initialState);
-    this.setState(resetState);
+    window.location.reload();
+    // this.animals = shuffle(animals);
+    // const resetState = this.getResetState(initialState);
+    // this.setState(resetState);
   }
 
   getResetState = ()=> {
@@ -488,6 +490,13 @@ export default class App extends Component {
     let resetState = initialState;
     resetState["muted"] = oldMutedState;
     return resetState;
+  }
+
+  updateUrlForNewAnimal = (index) => {
+    let animal = this.animals[index];
+    let title = animal.title;
+    let slug = "?animal=" + animal.slug;
+    window.history.pushState({}, title, slug)
   }
 
 }
