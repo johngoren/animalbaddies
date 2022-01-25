@@ -9,7 +9,6 @@ const html =
 
 <p>This project originated in conversations in which John (who grew up with a view of animals like <a href="https://boardgamegeek.com/boardgame/9749/forest-friends" target="_NEW">this</a>) was horrified by things he was hearing about animals from Mary (who had worked at a children's zoo). We also had some questions about famous people claiming society should take cues from lobsters.</p>
 
-
 <h3>Privacy</h3>
 
 <p>We collect no personal information and use no trackers. All we store is anonymous stats on how many people think animals are bastards.</p>

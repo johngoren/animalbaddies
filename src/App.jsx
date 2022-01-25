@@ -15,6 +15,7 @@ import aboutContent from './aboutContent';
 import tingle from 'tingle.js';
 import DecisionAnimation from './decisionAnimation';
 import Calc from './calc';
+import * as bookmarks from './bookmarks';
 
 import { 
     BASTARD, 
@@ -39,6 +40,7 @@ else {
 const initialState = {
   animation: "flip-in-hor-bottom",
   backgroundColor: '#000',
+  bookmarkMode: false,
   countBastard: 0,
   countNotBastard: 0,
   endgameMode: false,
@@ -61,14 +63,23 @@ export default class App extends Component {
 
   constructor(props) {
     super();
-
+    const bookmark = bookmarks.get();
     const animals = importerAnimals(data);
-    this.animals = shuffle(animals);
     this.state = initialState;
+    if (bookmarks.isValid(bookmark)) {
+      this.state.welcomeMode = false;
+      const shuffled = shuffle(animals)
+      const newDeck = bookmarks.getDeckWithRestoredBookmark(bookmark, shuffled);
+      this.animals = newDeck;
+    }
+    else {
+      this.animals = shuffle(animals);
+    }
     this.setBackgroundColorForAnimal(0);
     this.setupModal();
   }
-  
+
+
   incrementCountForDecision = (isBastard) => {
     let { countNotBastard, countBastard } = this.state;
     isBastard === BASTARD ? countBastard++ : countNotBastard++;
@@ -172,7 +183,6 @@ export default class App extends Component {
     img.src = imageURL;
     img.crossOrigin = "Anonymous";
       
-      
     img.onload = () => {
       const palette = getImagePalette(img);
       const backgroundColor = palette.backgroundColor;
@@ -183,8 +193,6 @@ export default class App extends Component {
   }
 
   setStateForNewAnimal(newIndex) {
-    this.updateUrlForNewAnimal(newIndex);
-
     if (newIndex === NUM_QUESTIONS) {
       this.setState({
         endgameMode: true
@@ -480,9 +488,6 @@ export default class App extends Component {
 
   onReset = ()=> {
     window.location.reload();
-    // this.animals = shuffle(animals);
-    // const resetState = this.getResetState(initialState);
-    // this.setState(resetState);
   }
 
   getResetState = ()=> {
@@ -492,11 +497,16 @@ export default class App extends Component {
     return resetState;
   }
 
+
+  // MARK: Bookmark
+
   updateUrlForNewAnimal = (index) => {
     let animal = this.animals[index];
     let title = animal.title;
     let slug = "?animal=" + animal.slug;
     window.history.pushState({}, title, slug)
   }
+
+
 
 }

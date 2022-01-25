@@ -25,6 +25,12 @@ var pool = mysql.createPool({
     connectionLimit: 9999
 })
 
+var serveIndex = require('serve-index');
+
+
+app.use(express.static(__dirname, { dotfiles: 'allow' } ));
+
+
 app.get('/', (req, res) => {
     let animal = req.query.animal;
     getAllStats().then(function(stats) {
@@ -42,6 +48,12 @@ app.get('/popularity', (req, res) => {
     getVotesFromDB(function(result) {
         res.send(getPopularityFromVotes(result));        
     })
+});
+
+app.get('/stats', (req, res) => {
+    getCountFromDB(function(result) {
+        res.send(result);
+    });
 });
 
 app.listen(port, () => {
@@ -196,6 +208,28 @@ function getVotesFromDB() {
         });
     });
 }   
+
+function getCountFromDB(callback) {
+    return new Promise(resolve => {
+        pool.getConnection(function(err, con) {
+
+            if (err) {
+                throw err;
+            }
+            else {
+                con.query("SELECT COUNT(time) FROM stats", function(error, results) {
+                    con.release();
+                    if (error) {
+                        throw error;
+                    }
+                    else {
+                        callback(results);    
+                    }
+                });
+            }    
+        });
+    });
+}
 
 // TODO: If needed, either let the SQL shoulder this tally or limit number of votes
 
