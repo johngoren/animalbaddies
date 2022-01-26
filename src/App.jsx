@@ -498,9 +498,9 @@ export default class App extends Component {
 
   updateUrlForNewAnimal = (index) => {
     let animal = this.animals[index];
+    let identifier = animal.slug;
     let title = animal.title;
-    let slug = "?animal=" + animal.slug;
-    window.history.pushState({}, title, slug)
+    window.history.pushState({}, title, identifier)
   }
 
 

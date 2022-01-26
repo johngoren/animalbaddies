@@ -27,16 +27,25 @@ var pool = mysql.createPool({
 
 var serveIndex = require('serve-index');
 
-
 app.use(express.static(__dirname, { dotfiles: 'allow' } ));
 
 
 app.get('/', (req, res) => {
-    let animal = req.query.animal;
     getAllStats().then(function(stats) {
-        res.render('index', { stats: stats, animal: animal });
+        res.render('index', { stats: stats });
     });
 })
+
+app.get('/:animal', (req, res) => {
+    const animal = req.params.animal;
+    const name = getNameFromSlug(animal);
+    // TODO: Get facts
+
+    getAllStats().then(function(stats) {
+        res.render('single', { stats: stats, animal: animal, name: name });
+    });
+})
+
 
 app.get('/votes', (req, res) => {
     getVotesFromDB(function(result) {
@@ -258,4 +267,15 @@ function getPopularityFromVotes(votes) {
         liked: best,
         disliked: worst
     }
+}
+
+// Helpers
+
+function getNameFromSlug(slug) {
+    if (slug != null) {
+        const capitalized = slug.split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ')
+        const noDashes = capitalized.replace(/-/g, " ");
+        return noDashes;    
+    }
+    return slug;
 }

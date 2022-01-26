@@ -1,6 +1,6 @@
 html
 	head
-		title Animal Bastards
+		title Animal Bastards - #{name}
 		link(rel='stylesheet', href='/styles/main.css', type='text/css')
 		link(rel='stylesheet', href='/styles/tingle.css', type='text/css')
 		link(rel='stylesheet', href='https://fonts.googleapis.com/css?family=Montserrat:400,600,700&display=swap')
@@ -8,13 +8,14 @@ html
 		link(rel='stylesheet', href='https://fonts.googleapis.com/css?family=Shrikhand&display=swap')
 		script(src='https://cdn.jsdelivr.net/npm/chart.js@2.8.0')
 		script(src='https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js')
-		meta(property="og:title" content="Animal Bastards")
-		meta(property="og:description" content="First impressions matter so you will be asked to judge each animal on sight.")
-		meta(property="og:image" content="https://www.animalbastards.com/images/sun-parakeet.jpg")
+		meta(property="og:title" content="Animal Bastards - " + name)
+		meta(property="og:description" content="First impressions matter so you will be asked to judge the " + name + " on sight.")
+		meta(property="og:image" content="https://www.animalbastards.com/images/" + animal + ".jpg")
 
-		meta(property="twitter:title" content="Animal Bastards")
-		meta(property="twitter:description" content="First impressions matter so you will be asked to judge each animal on sight.")
-		meta(property="twitter:image" content="https://www.animalbastards.com/images/sun-parakeet.jpg")
+		meta(property="twitter:card" content="summary")
+		meta(property="twitter:title" content="Animal Bastards - " + name)
+		meta(property="twitter:description" content="First impressions matter so you will be asked to judge the " + name + " on sight.")
+		meta(property="twitter:image" content="https://www.animalbastards.com/images/" + animal + ".jpg")
 
 
 	body
