@@ -16,6 +16,7 @@ import tingle from 'tingle.js';
 import DecisionAnimation from './decisionAnimation';
 import Calc from './calc';
 import * as bookmarks from './bookmarks';
+import * as helpers from './helpers/helpers';
 
 import { 
     BASTARD, 
@@ -61,7 +62,7 @@ const initialState = {
 
 export default class App extends Component {
 
-  constructor(props) {
+  constructor() {
     super();
     const bookmark = bookmarks.get();
     const animals = importerAnimals(data);
@@ -177,7 +178,7 @@ export default class App extends Component {
     }
 
     let animal = this.animals[index];
-    let imageURL = this.buildImageURL(animal.slug);
+    let imageURL = helpers.buildImageURL(animal.slug);
     
     const img = new Image();
     img.src = imageURL;
@@ -210,6 +211,8 @@ export default class App extends Component {
     }, ()=> {
       this.setBackgroundColorForAnimal(newIndex);
     });
+
+    this.updateUrlForNewAnimal(newIndex);
   }
 
   setStateForStatsInterlude() {
@@ -345,7 +348,7 @@ export default class App extends Component {
 
     if (endgameMode === false) {
       animal = this.animals[currentIndex];
-      imageURL = this.buildImageURL(animal.slug);  
+      imageURL = helpers.buildImageURL(animal.slug);  
     }
 
     if (endgameMode === true) {
@@ -356,7 +359,7 @@ export default class App extends Component {
               animals={animals}
               countBastard={countBastard}
               data={this.data}
-              onReset={()=>this.onReset()}
+              onReset={()=>helpers.onReset()}
             />
           </div></div>
       )
@@ -477,17 +480,10 @@ export default class App extends Component {
 
   // MARK: Helpers
 
-  buildImageURL = (slug) => {
-    return `/images/${slug}.jpg`; 
-  }
 
   shouldGoToStatsInterlude = ()=> {
     const remainder = (this.state.currentIndex + 1) % CARDS_BETWEEN_STATS;
     return ((remainder === 0) ? true : false);
-  }
-
-  onReset = ()=> {
-    window.location.reload();
   }
 
   getResetState = ()=> {
