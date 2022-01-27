@@ -55,6 +55,7 @@ const initialState = {
   statsInterludeIsOn: false,
   statsModeToggle: false,
   status: null,
+  userStats: null,
   votes: [],
   welcomeMode: true
 }
@@ -78,6 +79,7 @@ export default class App extends Component {
     }
     this.setBackgroundColorForAnimal(0);
     this.setupModal();
+    this.getStatsFromServer();
   }
 
 
@@ -360,6 +362,7 @@ export default class App extends Component {
               countBastard={countBastard}
               data={this.data}
               onReset={()=>helpers.onReset()}
+              stats={this.state.userStats}
             />
           </div></div>
       )
@@ -503,6 +506,16 @@ export default class App extends Component {
     window.history.pushState({}, title, "/animals/" + identifier)
   }
 
+  // MARK: Stats loading
+
+  getStatsFromServer = () => {
+    axios
+        .get("https://animalbastards.com/stats")
+        .then(response => {
+            console.log(response);
+            this.setState({ userStats: response.data });
+        })      
+  }
 
 
 }
