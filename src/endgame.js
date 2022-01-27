@@ -7,9 +7,11 @@ export default class Endgame extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            data: null,
             page: 0
         };
-        this.data = this.getDataFromPage();
+        // this.data = this.getDataFromPage();
+        this.data = this.getDataFromServer();
     }
       
     calculateDislikedPercentage(disliked) {
@@ -88,10 +90,20 @@ export default class Endgame extends Component {
         return JSON.parse(document.getElementById("data").getAttribute("data-stats"));
     }
 
+    getDataFromServer = () => {
+        axios
+            .get("https://animalbastards.com/stats")
+            .then(response => {
+                this.setState({ data: response.data })
+            })
+            
+    }
+
     render() {
-        let {page} = this.state;
+        // let data = this.data.stats;
+
+        let {page, data} = this.state;
         let {animals, countBastard} = this.props;
-        let data = this.data.stats;
         let percentageDisliked = this.calculateDislikedPercentage(countBastard);    // In test mode this may skew
         let categoryNum = this.getCategoryNumFromPercentage(percentageDisliked);
         if (page === 0) {
