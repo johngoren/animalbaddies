@@ -87,15 +87,15 @@ export default class Endgame extends Component {
 
       // MARK: Statistical data from DB
 
-    getDataFromPage = () => {
-        return JSON.parse(document.getElementById("data").getAttribute("data-stats"));
-    }
+    // getDataFromPage = () => {
+    //     return JSON.parse(document.getElementById("data").getAttribute("data-stats"));
+    // }
 
     render() {
         // let data = this.data.stats;
 
-        let {page, data} = this.state;
-        let {animals, countBastard} = this.props;
+        let {page} = this.state;
+        let {animals, countBastard, data} = this.props;
         let percentageDisliked = this.calculateDislikedPercentage(countBastard);    // In test mode this may skew
         let categoryNum = this.getCategoryNumFromPercentage(percentageDisliked);
         if (page === 0) {

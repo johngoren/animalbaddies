@@ -32,9 +32,7 @@ app.use(express.static(__dirname, { dotfiles: 'allow' } ));
 
 
 app.get('/', (req, res) => {
-    getAllStats().then(function(stats) {
-        res.render('index', { stats: stats });
-    });
+    res.render('index');
 })
 
 app.get('/animals/:animal', (req, res) => {
@@ -42,9 +40,7 @@ app.get('/animals/:animal', (req, res) => {
     const name = getNameFromSlug(animal);
     const facts = getFactsForSlug(animal);
 
-    getAllStats().then(function(stats) {
-        res.render('single', { stats: stats, animal: animal, name: name, facts: facts });
-    });
+    res.render('single', { animal: animal, name: name, facts: facts });
 })
 
 app.get('/stats', (req, res) => {

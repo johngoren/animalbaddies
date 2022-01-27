@@ -353,6 +353,8 @@ export default class App extends Component {
       imageURL = helpers.buildImageURL(animal.slug);  
     }
 
+    const endgameStats = this.state.userStats;
+
     if (endgameMode === true) {
       return (
           <div className="App flex">
@@ -360,9 +362,8 @@ export default class App extends Component {
             <Endgame
               animals={animals}
               countBastard={countBastard}
-              data={this.data}
+              data={endgameStats}
               onReset={()=>helpers.onReset()}
-              stats={this.state.userStats}
             />
           </div></div>
       )
