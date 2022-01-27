@@ -500,7 +500,7 @@ export default class App extends Component {
     let animal = this.animals[index];
     let identifier = animal.slug;
     let title = animal.title;
-    window.history.pushState({}, title, identifier)
+    window.history.pushState({}, title, "/animals/" + identifier)
   }
 
 

@@ -5,6 +5,7 @@ const mysql = require('mysql')
 const favicon = require('serve-favicon');
 const args = require('minimist')(process.argv.slice(2))
 const DEBUG_MODE = args['debug'] === 'true' ? true : false;
+const gameDB = require('./src/animals.json');
 
 app.set('view engine', 'pug')
 app.use(express.static(__dirname + '/public'));
@@ -36,16 +37,21 @@ app.get('/', (req, res) => {
     });
 })
 
-app.get('/:animal', (req, res) => {
+app.get('/animals/:animal', (req, res) => {
     const animal = req.params.animal;
     const name = getNameFromSlug(animal);
-    // TODO: Get facts
+    const facts = getFactsForSlug(animal);
 
     getAllStats().then(function(stats) {
-        res.render('single', { stats: stats, animal: animal, name: name });
+        res.render('single', { stats: stats, animal: animal, name: name, facts: facts });
     });
 })
 
+app.get('/stats', (req, res) => {
+    getAllStats().then(function(stats) {
+        res.send(stats);
+    })        
+})
 
 app.get('/votes', (req, res) => {
     getVotesFromDB(function(result) {
@@ -59,7 +65,7 @@ app.get('/popularity', (req, res) => {
     })
 });
 
-app.get('/stats', (req, res) => {
+app.get('/users', (req, res) => {
     getCountFromDB(function(result) {
         res.send(result);
     });
@@ -278,4 +284,35 @@ function getNameFromSlug(slug) {
         return noDashes;    
     }
     return slug;
+}
+
+function getFactsForSlug(slug) {
+    const animalEntry = getAnimal(slug);
+    if (animalEntry != null) {
+        const facts = getFactsFromEntry(animalEntry);
+        console.log(facts);
+        return facts;
+    }
+    return null;
+}
+
+function getAnimals() {
+    return gameDB.posts;
+}
+
+function getAnimal(slug) {
+    const results = getAnimals().filter(animal => animal.slug === slug);
+    if (results.length === 0) {
+        return null;
+    }
+    else {
+        return results[0];
+    }
+}
+
+function getFactsFromEntry(animalEntry) {
+    const fields = animalEntry["custom_fields"];
+    const good = fields["bastard_reason"];
+    const bad = fields["not_bastard_reason"];
+    return [good, bad];
 }
