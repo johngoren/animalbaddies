@@ -513,7 +513,6 @@ export default class App extends Component {
     axios
         .get("https://animalbastards.com/stats")
         .then(response => {
-            console.log(response);
             this.setState({ userStats: response.data });
         })      
   }

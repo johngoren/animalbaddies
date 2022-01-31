@@ -8,10 +8,8 @@ export default class Endgame extends Component {
         super(props);
         this.state = {
             data: null,
-            isLoaded: false,
             page: 0
         };
-        // this.data = this.getDataFromPage();
         this.data = this.props.data;
     }
       
@@ -87,13 +85,7 @@ export default class Endgame extends Component {
 
       // MARK: Statistical data from DB
 
-    // getDataFromPage = () => {
-    //     return JSON.parse(document.getElementById("data").getAttribute("data-stats"));
-    // }
-
     render() {
-        // let data = this.data.stats;
-
         let {page} = this.state;
         let {animals, countBastard, data} = this.props;
         let percentageDisliked = this.calculateDislikedPercentage(countBastard);    // In test mode this may skew

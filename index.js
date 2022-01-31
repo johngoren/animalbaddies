@@ -6,27 +6,27 @@ const favicon = require('serve-favicon');
 const args = require('minimist')(process.argv.slice(2))
 const DEBUG_MODE = args['debug'] === 'true' ? true : false;
 const gameDB = require('./src/animals.json');
+const cors = require('cors');
 
 app.set('view engine', 'pug')
 app.use(express.static(__dirname + '/public'));
 app.use("/dist", express.static(__dirname + '/dist'));
 app.use("/styles", express.static(__dirname + '/styles'));
 app.use(favicon(__dirname + '/public/images/favicon.ico'));
+app.use(cors())
 
-var DB_HOST = "mysql.gorenfeld.net";
-var DB_USER = "animalstats";
-var DB_PASSWORD = "reindeer";
-var DB_DATABASE = "animalstats";
+const DB_HOST = "mysql.gorenfeld.net";
+const DB_USER = "animalstats";
+const DB_PASSWORD = "reindeer";
+const DB_DATABASE = "animalstats";
 
-var pool = mysql.createPool({
+const pool = mysql.createPool({
     host: DB_HOST,
     user: DB_USER,
     password: DB_PASSWORD,
     database: DB_DATABASE,
     connectionLimit: 9999
 })
-
-var serveIndex = require('serve-index');
 
 app.use(express.static(__dirname, { dotfiles: 'allow' } ));
 
