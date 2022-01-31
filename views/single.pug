@@ -1,0 +1,24 @@
+html
+	head
+		title Animal Bastards - #{name}
+		link(rel='stylesheet', href='/styles/main.css', type='text/css')
+		link(rel='stylesheet', href='/styles/tingle.css', type='text/css')
+		link(rel='stylesheet', href='https://fonts.googleapis.com/css?family=Montserrat:400,600,700&display=swap')
+		link(rel='stylesheet', href='https://fonts.googleapis.com/css?family=Merriweather&display=swap')
+		link(rel='stylesheet', href='https://fonts.googleapis.com/css?family=Shrikhand&display=swap')
+		script(src='https://cdn.jsdelivr.net/npm/chart.js@2.8.0')
+		script(src='https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js')
+		meta(property="og:title" content="Animal Bastards - " + name)
+		meta(property="og:description" content=facts[0][0])
+		meta(property="og:image" content="https://www.animalbastards.com/images/" + animal + ".jpg")
+
+		meta(property="twitter:card" content="summary")
+		meta(property="twitter:title" content="Animal Bastards - " + name)
+		meta(property="twitter:description" content=facts[0][0])
+		meta(property="twitter:image" content="https://www.animalbastards.com/images/" + animal + ".jpg")
+
+
+	body
+		div#root
+		div#bookmark(data-bookmark={animal})
+		script(src='/dist/main.js')
