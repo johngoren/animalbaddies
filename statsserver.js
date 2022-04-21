@@ -6,11 +6,7 @@ const cors = require('cors')
 
 app.use(cors())
 
-var DB_HOST = "mysql.gorenfeld.net";
-var DB_USER = "animalstats";
-var DB_PASSWORD = "reindeer";
-var DB_NAME = "animalstats";
-var DB_DATABASE = "animalstats";
+const { DB_HOST, DB_USER, DB_PASSWORD, DB_DATABASE } = process.env
 
 var pool = mysql.createPool({
 	host: DB_HOST,
