@@ -1,4 +1,7 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This is the source code for Animal Bastards, a "funny, thought-provoking game about whether animals are bastards." (<a href="https://www.rockpapershotgun.com/animal-bastards-is-funny-thought-provoking-game-about-whether-animals-are-bastards">Rock Paper Shotgun</a>).
+
+https://www.rockpapershotgun.com/animal-bastards-is-funny-thought-provoking-game-about-whether-animals-are-bastards
+
 
 ## Available Scripts
 
