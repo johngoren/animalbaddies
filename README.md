@@ -1,3 +1,3 @@
 This is the source code for Animal Bastards, a "funny, thought-provoking game about whether animals are bastards." (<a href="https://www.rockpapershotgun.com/animal-bastards-is-funny-thought-provoking-game-about-whether-animals-are-bastards">Rock Paper Shotgun</a>). You can play the game <a href="https://animalbastards.com/">here</a>.
 
-Notes on the code: This was developed for ReactJS for entertainment purposes only. While it's built in an older classes idiom, if I built it today it would use the newer, purely-functional class-less style.
+Notes on the code: This was developed for ReactJS for entertainment purposes only. While it's built in an older classes idiom, if I built it today it would use the newer, purely-functional class-less style. Also, there are server details exposed in the code which in a professional project I'd hide in environment variables for security reasons.
