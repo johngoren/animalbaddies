@@ -2,7 +2,7 @@
 
 This is the source code for Animal B-------, a "funny, thought-provoking game about whether animals are b-------" (<a href="https://www.rockpapershotgun.com/animal-bastards-is-funny-thought-provoking-game-about-whether-animals-are-bastards">Rock Paper Shotgun</a>) that has been played by users around the world about 11,000 times. The game evolved out of conversations with my more zoologically-educated partner over whether (as I believed in my naive way) ducks were romantic or if animals were nice. 
 
-Originally it was hosted <a href="https://animalbastards.com/">here</a>, but we need to move it to a cheaper server. Also it only really looks OK on desktop and could use both a cosmetic makeover and a mobile UI.
+The game is temporarily offline while we find a cheaper server configuration. Also it only really worked OK on desktop and it could use both a cosmetic makeover and a mobile UI.
 
 
 <img width="1167" height="656" alt="image" src="https://github.com/user-attachments/assets/26c96c78-03a9-421d-aae8-069c679ad491" />
