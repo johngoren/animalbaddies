@@ -1,5 +1,4 @@
-This is the source code for Animal B-------, a "funny, thought-provoking game about whether animals are b-------" (<a href="https://www.rockpapershotgun.com/animal-bastards-is-funny-thought-provoking-game-about-whether-animals-are-bastards">Rock Paper Shotgun</a>) that has been played by users around the world about 11,000 times. You can play the game <a href="https://animalbastards.com/">here</a>.
+This is the source code for Animal B-------, a "funny, thought-provoking game about whether animals are b-------" (<a href="https://www.rockpapershotgun.com/animal-bastards-is-funny-thought-provoking-game-about-whether-animals-are-bastards">Rock Paper Shotgun</a>) that has been played by users around the world about 11,000 times. 
 
-Notes on the code: This was developed for ReactJS for entertainment purposes only. While it's built in an older classes idiom, if I built it today it would use the newer, purely-functional class-less style. And a lot of little things in the code would be a little bit cleaner.
+Originally it was hosted <a href="https://animalbastards.com/">here</a>, but we need to move it to a cheaper server. Also it only really runs well on desktop and could use a mobile UI.
 
-Although jQuery is in the dependencies, it's only used for the modal popups.
